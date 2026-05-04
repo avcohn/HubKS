@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnTime | הסכמי תעופה משרדי ממשלה</title>
+  <style>
+    :root{
+      --bg:#f3f6fb;
+      --ink:#102033;
+      --muted:#667085;
+      --card:#ffffff;
+      --line:#dbe3ef;
+      --shadow:0 18px 45px rgba(16,32,51,.10);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial, "Noto Sans Hebrew", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(22,94,255,.13), transparent 35%),
+        linear-gradient(135deg,#eef3fa,#f8fbff);
+      color:var(--ink);
+    }
+
+    header{
+      padding:42px 24px 30px;
+      background:linear-gradient(135deg,#07182f,#123d6a);
+      color:white;
+      position:relative;
+      overflow:hidden;
+    }
+
+    header:before{
+      content:"✈";
+      position:absolute;
+      left:8%;
+      top:15px;
+      font-size:150px;
+      opacity:.08;
+      transform:rotate(-18deg);
+    }
+
+    .wrap{
+      max-width:1180px;
+      margin:0 auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:22px;
+    }
+
+    .brand-mark{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.25);
+      font-size:28px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(32px,5vw,58px);
+      letter-spacing:-1px;
+    }
+
+    .subtitle{
+      margin:10px 0 0;
+      color:#cfe0f7;
+      font-size:18px;
+      max-width:760px;
+      line-height:1.6;
+    }
+
+    .search-panel{
+      margin-top:-28px;
+      position:relative;
+      z-index:5;
+      padding:0 24px;
+    }
+
+    .search-box{
+      max-width:1180px;
+      margin:0 auto;
+      background:white;
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      border:1px solid var(--line);
+    }
+
+    .search-box span{
+      font-size:24px;
+    }
+
+    input{
+      width:100%;
+      border:none;
+      outline:none;
+      font-size:18px;
+      padding:14px;
+      color:var(--ink);
+    }
+
+    main{
+      padding:34px 24px 60px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-bottom:26px;
+    }
+
+    .stat{
+      background:rgba(255,255,255,.78);
+      backdrop-filter:blur(12px);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 10px 30px rgba(16,32,51,.06);
+    }
+
+    .stat b{
+      display:block;
+      font-size:28px;
+    }
+
+    .stat span{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--line);
+      box-shadow:0 14px 34px rgba(16,32,51,.08);
+      transition:.25s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 22px 55px rgba(16,32,51,.14);
+    }
+
+    .top{
+      padding:18px;
+      color:white;
+      min-height:116px;
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      position:relative;
+    }
+
+    .top:after{
+      content:"";
+      position:absolute;
+      inset:auto -40px -55px auto;
+      width:140px;
+      height:140px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+    }
+
+    .airline-name{
+      margin:0;
+      font-size:22px;
+      line-height:1.2;
+    }
+
+    .codes{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .code{
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.25);
+      color:white;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .logo{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      background:white;
+      padding:8px;
+      object-fit:contain;
+      box-shadow:0 12px 22px rgba(0,0,0,.14);
+      z-index:2;
+    }
+
+    .body{
+      padding:18px;
+    }
+
+    .row{
+      margin-bottom:14px;
+    }
+
+    .label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:5px;
+      font-weight:bold;
+    }
+
+    .value{
+      background:#f6f8fb;
+      border:1px solid #e7edf5;
+      border-radius:14px;
+      padding:10px 12px;
+      direction:ltr;
+      text-align:left;
+      font-family:Consolas, monospace;
+      font-size:14px;
+      overflow:auto;
+      white-space:nowrap;
+    }
+
+    .notes{
+      margin:12px 0 0;
+      padding:0;
+      list-style:none;
+    }
+
+    .notes li{
+      padding:9px 0;
+      border-bottom:1px solid #edf1f6;
+      color:#344054;
+      line-height:1.45;
+      font-size:14px;
+    }
+
+    .notes li:last-child{border-bottom:none}
+
+    .tagline{
+      margin-top:14px;
+      padding:11px 13px;
+      border-radius:14px;
+      background:#eef4ff;
+      color:#174ea6;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .hidden{display:none}
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      padding:24px;
+      font-size:13px;
+    }
+
+    @media(max-width:980px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .stats{grid-template-columns:1fr}
+    }
+
+    @media(max-width:640px){
+      header{padding:34px 18px 28px}
+      main{padding:28px 16px 44px}
+      .search-panel{padding:0 16px}
+      .search-box{border-radius:18px}
+      .grid{grid-template-columns:1fr}
+      .top{min-height:106px}
+      .airline-name{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">✈️</div>
+      <div>
+        <h1>OnTime</h1>
+        <p class="subtitle">
+          מרכז ידע להסכמי תעופה ממשלתיים — פקודות תמחור, הערות קורפורייט, אמצעי תשלום והטבות לפי חברה.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="search-panel">
+  <div class="search-box">
+    <span>🔎</span>
+    <input id="searchInput" type="search" placeholder="חיפוש לפי חברה, קוד, פקודה, יעד או הטבה..." />
+  </div>
+</section>
+
+<main>
+  <div class="wrap">
+
+    <section class="stats">
+      <div class="stat"><b id="count">11</b><span>כרטיסי הסכם</span></div>
+      <div class="stat"><b>RTL</b><span>מותאם עברית ומובייל</span></div>
+      <div class="stat"><b>GDS</b><span>פקודות זמינות בשליפה מהירה</span></div>
+    </section>
+
+    <section class="grid" id="cards"></section>
+
+  </div>
+</main>
+
+<footer>
+  OnTime Knowledge Hub · Government Travel Desk · Internal Use
+</footer>
+
+<script>
+const airlines = [
+  {
+    name:"אל על",
+    codes:["LY","ישראלית"],
+    color:"#0033A0",
+    logo:"https://logo.clearbit.com/elal.com",
+    price:"FXR/R,U*IGO00",
+    payment:"FPAGT*V123456%COM12686",
+    corporate:"12686SRCODP",
+    notes:[
+      "יעדי יציאה בהסכם: TLV, LON, ZRH, ROM, NYC, PAR, BER, WAS, GVA, DXB, FRA, USA, Europe",
+      "מחויבות לאישור מקום ב-Y עד 48 שעות לפני הטיסה בהתאם לתנאים.",
+      "שינוי שם עד הכרטוס ללא עלות דרך מוקד אל על.",
+      "שינוי וביטול כרטיסי Classic ללא עלות, בכפוף להפרשי מחיר.",
+      "ללא עמלה."
+    ],
+    tag:"הכי ישראלי, הכי ממשלתי"
+  },
+  {
+    name:"אל על",
+    codes:["LY","אמריקאית"],
+    color:"#1C4C9A",
+    logo:"https://logo.clearbit.com/elal.com",
+    price:"FXR/R,U*COR05",
+    payment:"FPCASH",
+    corporate:"12686SRCODP · FT*GOVCOR05",
+    notes:[
+      "מיועד למערכת האמריקאית.",
+      "יש להזין Tour Code מתאים.",
+      "ללא עמלה."
+    ],
+    tag:"גרסת US Desk"
+  },
+  {
+    name:"Delta / Air France / KLM",
+    codes:["DL","AF","KL"],
+    color:"#C8102E",
+    logo:"https://logo.clearbit.com/delta.com",
+    price:"FXR/R,U055761",
+    payment:"FPCASH",
+    corporate:"OSYYOINILGOVIL · OSDLCORPORATE 43YA",
+    notes:[
+      "הזזת Time Limit החל ממחלקות מסוימות.",
+      "הושבה ללא עלות במושבים רגילים.",
+      "החלפת שם מלא ללא עלות לאחר כרטוס.",
+      "תעריפים מיוחדים לפי פקודת הממשלה.",
+      "לקוח מזוהה כעסקי ומטופל בקדימות.",
+      "מחיר DL ללא עמלה בתנאי שהוזנה הערת קורפורייט."
+    ],
+    tag:"הברית המשולשת"
+  },
+  {
+    name:"Turkish Airlines",
+    codes:["TK"],
+    color:"#E30613",
+    logo:"https://logo.clearbit.com/turkishairlines.com",
+    price:"FXR/R,U571844",
+    payment:"FPCASH",
+    corporate:"FT*24639CCC · SR CLIDTKHK/24639000TKCCC",
+    notes:[
+      "Tour Code נכנס אוטומטית עם הדאטה.",
+      "הטבת הושבה רק בשימוש בתעריף הסכם.",
+      "POO: Israel, Uzbekistan, China, India, Sri Lanka, Moldova, Azerbaijan.",
+      "כל יעד שרשום כ-POO ומתמחר הסכם כולל עמלה גם אם לא יציאה מתל אביב."
+    ],
+    tag:"כשאין ישיר — יש איסטנבול"
+  },
+  {
+    name:"ITA Airways",
+    codes:["AZ"],
+    color:"#006B7F",
+    logo:"https://logo.clearbit.com/ita-airways.com",
+    price:"FXR/R,U131472",
+    payment:"FPCASH",
+    corporate:"SR CLID AZ HK/131472AZ · OS YY FQTB 131472",
+    notes:[
+      "חובה להכניס את שתי הערות הקורפורייט.",
+      "תמחור כרטיס גמיש: FXB/R,U131472/FF-ECOFLEX.",
+      "הושבה רגילה גם כשאין מחיר הסכם — ניתן להוסיף OSI.",
+      "הזזת Time Limit."
+    ],
+    tag:"איטלקי, אבל עם סדר"
+  },
+  {
+    name:"Lufthansa Group / United / Air Canada",
+    codes:["LH","LX","OS","SN","UA","AC"],
+    color:"#05164D",
+    logo:"https://logo.clearbit.com/lufthansa.com",
+    price:"FXR/R,U306866",
+    payment:"FPCASH",
+    corporate:"FT*1CF306866",
+    notes:[
+      "כולל: Air Canada, Lufthansa, Swiss, Brussels, Austrian, United.",
+      "אם מתמחרים עם קורפורייט זה נכנס אוטומטית, אם לא — להזין FT.",
+      "תמחור ללא עלויות ביטול/שינוי: FXR/R,U306866*NPE.",
+      "ההסכם לאירופה, צפון, מרכז ודרום אמריקה.",
+      "ניתן לשלב בין חברות התעופה."
+    ],
+    tag:"קונקשנים עם עניבה"
+  },
+  {
+    name:"Air Europa",
+    codes:["UX"],
+    color:"#1D4F91",
+    logo:"https://logo.clearbit.com/aireuropa.com",
+    price:"FXR/R,U521702",
+    payment:"FPCASH",
+    corporate:"FT*521702",
+    notes:[
+      "הערת קורפורייט חובה.",
+      "אם מתמחרים עם קורפורייט זה נכנס אוטומטית, אם לא — להזין FT.",
+      "תמחור כרטיס גמיש: FXR/FF-FLEX/R,U521702.",
+      "ההסכם לכל יעדי Air Europa, לא רק ליציאה מישראל."
+    ],
+    tag:"ספרד בלי דרמה"
+  },
+  {
+    name:"American / British / Iberia / JAL",
+    codes:["AA","BA","IB","JL"],
+    color:"#2A2A2A",
+    logo:"https://logo.clearbit.com/britishairways.com",
+    price:"FXR/R,U045249",
+    payment:"FPCASH",
+    corporate:"FT*IN17813GB · SR CLIDAAHK/AAIN17813GB · SR CLIDIBHK/IN17813D01 · SR CLIDBAHK/IN17813D01",
+    notes:[
+      "הערת קורפורייט חובה.",
+      "Ticket Designator: AA XPRSEU, JL/BA CED, IB E9CED.",
+      "אם מתמחרים עם קורפורייט זה נכנס אוטומטית, אם לא — להזין FT.",
+      "ההסכם לכל היעדים וניתן לשלב בין חברות התעופה."
+    ],
+    tag:"OneWorld, הרבה אותיות"
+  },
+  {
+    name:"Ethiopian Airlines",
+    codes:["ET"],
+    color:"#078930",
+    logo:"https://logo.clearbit.com/ethiopianairlines.com",
+    price:"FXR/R,U*TLV133",
+    payment:"FPCASH",
+    corporate:"FT*133TLV · OSET CORPORATE TLVCO133",
+    notes:[
+      "הערות קורפורייט חובה.",
+      "ההסכם לכל היעדים של Ethiopian.",
+      "תקף לכל המחלקות, ליציאה מהארץ."
+    ],
+    tag:"אדיס זה כבר שער"
+  },
+  {
+    name:"Air Baltic",
+    codes:["BT"],
+    color:"#B7D432",
+    logo:"https://logo.clearbit.com/airbaltic.com",
+    price:"FXR/R,U306866",
+    payment:"FPCASH",
+    corporate:"OSBT 0005ITCMPIL",
+    notes:[
+      "ההסכם הוא למחיר FLEX.",
+      "מחיר רגיל יכול להיות זול יותר — לבדוק לפני כרטוס."
+    ],
+    tag:"בלטי, גמיש, לפעמים יקר"
+  },
+  {
+    name:"Emirates",
+    codes:["EK"],
+    color:"#D71920",
+    logo:"https://logo.clearbit.com/emirates.com",
+    price:"FXX/R,U244022",
+    payment:"FPCASH",
+    corporate:"FT*ZZIHQ3ZZ",
+    notes:[
+      "Tour Code חובה.",
+      "תמחור לפי פקודת הסכם.",
+      "יש לוודא שהנתונים נכנסו לפני כרטוס."
+    ],
+    tag:"דובאי סטייל"
+  },
+  {
+    name:"Azerbaijan Airlines",
+    codes:["J2"],
+    color:"#00A3E0",
+    logo:"https://logo.clearbit.com/azal.az",
+    price:"FXX/R,U333075",
+    payment:"FPCASH",
+    corporate:"FT*ILD00008",
+    notes:[
+      "Tour Code חובה.",
+      "תמחור לפי פקודת הסכם.",
+      "יש לוודא התאמה לפני כרטוס."
+    ],
+    tag:"הפתעת באקו"
+  }
+];
+
+const cards = document.getElementById("cards");
+const search = document.getElementById("searchInput");
+const count = document.getElementById("count");
+
+function render(list){
+  cards.innerHTML = "";
+  count.textContent = list.length;
+
+  list.forEach(a => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="top" style="background:linear-gradient(135deg, ${a.color}, #07182f);">
+        <div>
+          <h2 class="airline-name">${a.name}</h2>
+          <div class="codes">${a.codes.map(c => `<span class="code">${c}</span>`).join("")}</div>
+        </div>
+        <img class="logo" src="${a.logo}" alt="${a.name}" onerror="this.style.display='none'">
+      </div>
+      <div class="body">
+        <div class="row">
+          <div class="label">פקודת תמחור</div>
+          <div class="value">${a.price}</div>
+        </div>
+        <div class="row">
+          <div class="label">אמצעי תשלום</div>
+          <div class="value">${a.payment}</div>
+        </div>
+        <div class="row">
+          <div class="label">קורפורייט / Tour Code / OSI</div>
+          <div class="value">${a.corporate}</div>
+        </div>
+        <ul class="notes">
+          ${a.notes.map(n => `<li>${n}</li>`).join("")}
+        </ul>
+        <div class="tagline">${a.tag}</div>
+      </div>
+    `;
+    cards.appendChild(card);
+  });
+}
+
+search.addEventListener("input", e => {
+  const q = e.target.value.trim().toLowerCase();
+  const filtered = airlines.filter(a => {
+    const blob = [
+      a.name,
+      a.codes.join(" "),
+      a.price,
+      a.payment,
+      a.corporate,
+      a.notes.join(" "),
+      a.tag
+    ].join(" ").toLowerCase();
+
+    return blob.includes(q);
+  });
+  render(filtered);
+});
+
+render(airlines);
+</script>
+
+</body>
+</html>
