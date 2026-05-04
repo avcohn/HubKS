@@ -1,342 +1,178 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OnTime | הסכמי תעופה משרדי ממשלה</title>
-  <style>
-    :root{
-      --bg:#f3f6fb;
-      --ink:#102033;
-      --muted:#667085;
-      --card:#ffffff;
-      --line:#dbe3ef;
-      --shadow:0 18px 45px rgba(16,32,51,.10);
-      --radius:24px;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DELAY · הסכמי תעופה ממשלתיים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:    #0b1a2e;
+  --navy2:   #0f2340;
+  --line:    rgba(255,255,255,.09);
+  --line2:   rgba(255,255,255,.05);
+  --text:    #e8f0fb;
+  --muted:   #6e8aaa;
+  --muted2:  #9ab0cb;
+  --green:   #22c55e;
+  --blue-lt: #3b82f6;
+  --mono:    "JetBrains Mono", monospace;
+  --sans:    "Heebo", sans-serif;
+  --tr:      .16s ease;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{ font-family:var(--sans); background:var(--navy); color:var(--text); min-height:100vh; }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial, "Noto Sans Hebrew", sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(22,94,255,.13), transparent 35%),
-        linear-gradient(135deg,#eef3fa,#f8fbff);
-      color:var(--ink);
-    }
+/* HEADER */
+header{
+  background:linear-gradient(160deg,#081525 0%,var(--navy2) 60%,#102038 100%);
+  border-bottom:1px solid var(--line);
+  padding:28px 24px 0;
+  position:relative; overflow:hidden;
+}
+header::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 5% 50%,rgba(29,78,216,.18) 0%,transparent 70%),
+             radial-gradient(ellipse 40% 60% at 95% 20%,rgba(59,130,246,.10) 0%,transparent 60%);
+  pointer-events:none;
+}
+.wrap{ max-width:1240px; margin:0 auto; }
+.header-top{ display:flex; align-items:center; gap:20px; position:relative; z-index:1; }
+.logo-wrap{
+  width:72px; height:72px; border-radius:20px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14);
+  display:grid; place-items:center; flex-shrink:0; overflow:hidden; padding:6px;
+}
+.logo-wrap img{ width:100%; height:100%; object-fit:contain; filter:brightness(1.1) contrast(1.05); }
+.app-name{ font-size:clamp(32px,5vw,52px); font-weight:900; letter-spacing:-.04em; line-height:1; color:#fff; }
+.app-sub{ margin-top:5px; color:var(--muted2); font-size:14px; }
+.header-search{
+  position:relative; z-index:1; padding:22px 0 0;
+  display:flex; gap:12px; align-items:center;
+  border-top:1px solid var(--line2); margin-top:22px;
+}
+.search-icon{ color:var(--muted); font-size:18px; flex-shrink:0; }
+#searchInput{
+  flex:1; background:transparent; border:none; outline:none;
+  font-family:var(--sans); font-size:17px; font-weight:500; color:var(--text);
+  padding:8px 0 14px; caret-color:var(--blue-lt);
+}
+#searchInput::placeholder{ color:var(--muted); }
+.search-count{ font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.04em; padding-bottom:14px; white-space:nowrap; }
 
-    header{
-      padding:42px 24px 30px;
-      background:linear-gradient(135deg,#07182f,#123d6a);
-      color:white;
-      position:relative;
-      overflow:hidden;
-    }
+/* MAIN */
+main{ padding:24px 24px 56px; }
+.grid{ max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 
-    header:before{
-      content:"✈";
-      position:absolute;
-      left:8%;
-      top:15px;
-      font-size:150px;
-      opacity:.08;
-      transform:rotate(-18deg);
-    }
+/* CARD */
+.card{
+  background:var(--navy2); border:1px solid var(--line); border-radius:20px;
+  overflow:hidden; transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr);
+  animation:fadeIn .3s ease both;
+}
+@keyframes fadeIn{ from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.card:hover{ transform:translateY(-3px); border-color:rgba(59,130,246,.3); box-shadow:0 16px 40px rgba(0,0,0,.35); }
 
-    .wrap{
-      max-width:1180px;
-      margin:0 auto;
-    }
+.card-head{
+  padding:14px 16px 12px; display:flex; justify-content:space-between;
+  align-items:flex-start; gap:12px; position:relative; overflow:hidden;
+}
+.card-head::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 60%);
+  pointer-events:none;
+}
+.airline-info{ flex:1; min-width:0; }
+.airline-name{ font-size:17px; font-weight:800; color:#fff; line-height:1.2; letter-spacing:-.02em; }
+.codes{ display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+.code{
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.22);
+  color:rgba(255,255,255,.92); padding:3px 8px; border-radius:999px;
+  font-size:11px; font-weight:700; font-family:var(--mono); letter-spacing:.04em;
+}
+.airline-logo{
+  width:48px; height:48px; border-radius:12px; background:white; padding:6px;
+  object-fit:contain; flex-shrink:0; box-shadow:0 6px 16px rgba(0,0,0,.25); z-index:1;
+}
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      margin-bottom:22px;
-    }
+/* CARD BODY */
+.card-body{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:10px; }
+.cmd-row{ display:flex; flex-direction:column; gap:4px; }
+.cmd-label{ font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+.cmd-val{
+  position:relative; background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.07);
+  border-radius:10px; padding:8px 38px 8px 10px; font-family:var(--mono); font-size:12.5px;
+  color:#a8d4ff; overflow-x:auto; white-space:nowrap; cursor:default;
+  transition:border-color var(--tr),background var(--tr); scrollbar-width:none;
+}
+.cmd-val::-webkit-scrollbar{ display:none; }
+.cmd-val:hover{ border-color:rgba(59,130,246,.35); background:rgba(29,78,216,.12); }
+.copy-btn{
+  position:absolute; left:6px; top:50%; transform:translateY(-50%);
+  width:26px; height:26px; border-radius:7px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1);
+  color:var(--muted2); font-size:12px; display:grid; place-items:center;
+  cursor:pointer; transition:background var(--tr),color var(--tr); flex-shrink:0;
+}
+.copy-btn:hover{ background:rgba(59,130,246,.25); color:#fff; }
+.copy-btn.copied{ background:rgba(34,197,94,.2); color:var(--green); border-color:rgba(34,197,94,.3); }
+.card-divider{ height:1px; background:var(--line2); margin:2px 0; }
+.notes{ list-style:none; display:flex; flex-direction:column; gap:0; }
+.notes li{
+  padding:6px 0; border-bottom:1px solid var(--line2);
+  font-size:13px; color:var(--muted2); line-height:1.5;
+  display:flex; gap:8px; align-items:flex-start;
+}
+.notes li:last-child{ border-bottom:none; }
+.notes li::before{ content:"·"; color:var(--blue-lt); font-size:16px; line-height:1.2; flex-shrink:0; }
 
-    .brand-mark{
-      width:54px;
-      height:54px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.25);
-      font-size:28px;
-    }
+/* NO RESULTS */
+#noResults{ display:none; text-align:center; padding:64px 24px; color:var(--muted); max-width:1240px; margin:0 auto; }
+#noResults strong{ display:block; font-size:20px; color:var(--text); margin-bottom:8px; }
+mark{ background:rgba(251,191,36,.28); color:#fde68a; border-radius:3px; padding:0 2px; }
 
-    h1{
-      margin:0;
-      font-size:clamp(32px,5vw,58px);
-      letter-spacing:-1px;
-    }
+footer{ text-align:center; padding:20px 24px 32px; color:var(--muted); font-size:12px; border-top:1px solid var(--line2); }
 
-    .subtitle{
-      margin:10px 0 0;
-      color:#cfe0f7;
-      font-size:18px;
-      max-width:760px;
-      line-height:1.6;
-    }
-
-    .search-panel{
-      margin-top:-28px;
-      position:relative;
-      z-index:5;
-      padding:0 24px;
-    }
-
-    .search-box{
-      max-width:1180px;
-      margin:0 auto;
-      background:white;
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding:18px;
-      display:flex;
-      gap:12px;
-      align-items:center;
-      border:1px solid var(--line);
-    }
-
-    .search-box span{
-      font-size:24px;
-    }
-
-    input{
-      width:100%;
-      border:none;
-      outline:none;
-      font-size:18px;
-      padding:14px;
-      color:var(--ink);
-    }
-
-    main{
-      padding:34px 24px 60px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
-      margin-bottom:26px;
-    }
-
-    .stat{
-      background:rgba(255,255,255,.78);
-      backdrop-filter:blur(12px);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:18px;
-      box-shadow:0 10px 30px rgba(16,32,51,.06);
-    }
-
-    .stat b{
-      display:block;
-      font-size:28px;
-    }
-
-    .stat span{
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:20px;
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      overflow:hidden;
-      border:1px solid var(--line);
-      box-shadow:0 14px 34px rgba(16,32,51,.08);
-      transition:.25s ease;
-    }
-
-    .card:hover{
-      transform:translateY(-5px);
-      box-shadow:0 22px 55px rgba(16,32,51,.14);
-    }
-
-    .top{
-      padding:18px;
-      color:white;
-      min-height:116px;
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:flex-start;
-      position:relative;
-    }
-
-    .top:after{
-      content:"";
-      position:absolute;
-      inset:auto -40px -55px auto;
-      width:140px;
-      height:140px;
-      border-radius:999px;
-      background:rgba(255,255,255,.12);
-    }
-
-    .airline-name{
-      margin:0;
-      font-size:22px;
-      line-height:1.2;
-    }
-
-    .codes{
-      margin-top:8px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-    }
-
-    .code{
-      background:rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.25);
-      color:white;
-      padding:5px 9px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:bold;
-    }
-
-    .logo{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      background:white;
-      padding:8px;
-      object-fit:contain;
-      box-shadow:0 12px 22px rgba(0,0,0,.14);
-      z-index:2;
-    }
-
-    .body{
-      padding:18px;
-    }
-
-    .row{
-      margin-bottom:14px;
-    }
-
-    .label{
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:5px;
-      font-weight:bold;
-    }
-
-    .value{
-      background:#f6f8fb;
-      border:1px solid #e7edf5;
-      border-radius:14px;
-      padding:10px 12px;
-      direction:ltr;
-      text-align:left;
-      font-family:Consolas, monospace;
-      font-size:14px;
-      overflow:auto;
-      white-space:nowrap;
-    }
-
-    .notes{
-      margin:12px 0 0;
-      padding:0;
-      list-style:none;
-    }
-
-    .notes li{
-      padding:9px 0;
-      border-bottom:1px solid #edf1f6;
-      color:#344054;
-      line-height:1.45;
-      font-size:14px;
-    }
-
-    .notes li:last-child{border-bottom:none}
-
-    .tagline{
-      margin-top:14px;
-      padding:11px 13px;
-      border-radius:14px;
-      background:#eef4ff;
-      color:#174ea6;
-      font-size:13px;
-      font-weight:bold;
-    }
-
-    .hidden{display:none}
-
-    footer{
-      text-align:center;
-      color:var(--muted);
-      padding:24px;
-      font-size:13px;
-    }
-
-    @media(max-width:980px){
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .stats{grid-template-columns:1fr}
-    }
-
-    @media(max-width:640px){
-      header{padding:34px 18px 28px}
-      main{padding:28px 16px 44px}
-      .search-panel{padding:0 16px}
-      .search-box{border-radius:18px}
-      .grid{grid-template-columns:1fr}
-      .top{min-height:106px}
-      .airline-name{font-size:20px}
-    }
-  </style>
+@media(max-width:1100px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:680px){
+  header{ padding:20px 16px 0; }
+  .logo-wrap{ width:56px; height:56px; border-radius:14px; }
+  .app-name{ font-size:30px; }
+  main{ padding:16px 14px 48px; }
+  .grid{ grid-template-columns:1fr; gap:12px; }
+  .cmd-val{ font-size:11.5px; }
+}
+</style>
 </head>
 <body>
 
 <header>
   <div class="wrap">
-    <div class="brand">
-      <div class="brand-mark">✈️</div>
-      <div>
-        <h1>OnTime</h1>
-        <p class="subtitle">
-          מרכז ידע להסכמי תעופה ממשלתיים — פקודות תמחור, הערות קורפורייט, אמצעי תשלום והטבות לפי חברה.
-        </p>
+    <div class="header-top">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="DELAY" onerror="this.parentElement.innerHTML='✈️';this.parentElement.style.fontSize='32px'"/>
       </div>
+      <div>
+        <div class="app-name">DELAY</div>
+        <div class="app-sub">הסכמי תעופה ממשלתיים · פקודות GDS · קורפורייט · תנאים</div>
+      </div>
+    </div>
+    <div class="header-search">
+      <span class="search-icon">⌕</span>
+      <input id="searchInput" type="search" placeholder="חברה, קוד, פקודה, Tour Code, יעד..." autocomplete="off" spellcheck="false"/>
+      <span class="search-count" id="searchCount"></span>
     </div>
   </div>
 </header>
 
-<section class="search-panel">
-  <div class="search-box">
-    <span>🔎</span>
-    <input id="searchInput" type="search" placeholder="חיפוש לפי חברה, קוד, פקודה, יעד או הטבה..." />
-  </div>
-</section>
-
 <main>
-  <div class="wrap">
-
-    <section class="stats">
-      <div class="stat"><b id="count">11</b><span>כרטיסי הסכם</span></div>
-      <div class="stat"><b>RTL</b><span>מותאם עברית ומובייל</span></div>
-      <div class="stat"><b>GDS</b><span>פקודות זמינות בשליפה מהירה</span></div>
-    </section>
-
-    <section class="grid" id="cards"></section>
-
-  </div>
+  <div class="grid" id="cards"></div>
+  <div id="noResults"><strong>לא נמצאו תוצאות</strong>נסה מונח אחר.</div>
 </main>
 
-<footer>
-  OnTime Knowledge Hub · Government Travel Desk · Internal Use
-</footer>
+<footer>DELAY · Government Travel Desk · Internal Use Only</footer>
 
 <script>
 const airlines = [
@@ -344,24 +180,23 @@ const airlines = [
     name:"אל על",
     codes:["LY","ישראלית"],
     color:"#0033A0",
-    logo:"https://logo.clearbit.com/elal.com",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/El_Al_Logo.svg/320px-El_Al_Logo.svg.png",
     price:"FXR/R,U*IGO00",
     payment:"FPAGT*V123456%COM12686",
     corporate:"12686SRCODP",
     notes:[
-      "יעדי יציאה בהסכם: TLV, LON, ZRH, ROM, NYC, PAR, BER, WAS, GVA, DXB, FRA, USA, Europe",
-      "מחויבות לאישור מקום ב-Y עד 48 שעות לפני הטיסה בהתאם לתנאים.",
+      "יציאה: TLV, LON, ZRH, ROM, NYC, PAR, BER, WAS, GVA, DXB, FRA, USA, Europe",
+      "מחויבות לאישור מקום ב-Y עד 48 שעות לפני הטיסה.",
       "שינוי שם עד הכרטוס ללא עלות דרך מוקד אל על.",
-      "שינוי וביטול כרטיסי Classic ללא עלות, בכפוף להפרשי מחיר.",
+      "שינוי וביטול Classic ללא עלות, בכפוף להפרשי מחיר.",
       "ללא עמלה."
-    ],
-    tag:"הכי ישראלי, הכי ממשלתי"
+    ]
   },
   {
     name:"אל על",
     codes:["LY","אמריקאית"],
     color:"#1C4C9A",
-    logo:"https://logo.clearbit.com/elal.com",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/El_Al_Logo.svg/320px-El_Al_Logo.svg.png",
     price:"FXR/R,U*COR05",
     payment:"FPCASH",
     corporate:"12686SRCODP · FT*GOVCOR05",
@@ -369,231 +204,230 @@ const airlines = [
       "מיועד למערכת האמריקאית.",
       "יש להזין Tour Code מתאים.",
       "ללא עמלה."
-    ],
-    tag:"גרסת US Desk"
+    ]
   },
   {
     name:"Delta / Air France / KLM",
     codes:["DL","AF","KL"],
-    color:"#C8102E",
-    logo:"https://logo.clearbit.com/delta.com",
+    color:"#B8002B",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/320px-Delta_logo.svg.png",
     price:"FXR/R,U055761",
     payment:"FPCASH",
     corporate:"OSYYOINILGOVIL · OSDLCORPORATE 43YA",
     notes:[
-      "הזזת Time Limit החל ממחלקות מסוימות.",
+      "הזזת Time Limit ממחלקות נבחרות.",
       "הושבה ללא עלות במושבים רגילים.",
       "החלפת שם מלא ללא עלות לאחר כרטוס.",
-      "תעריפים מיוחדים לפי פקודת הממשלה.",
-      "לקוח מזוהה כעסקי ומטופל בקדימות.",
-      "מחיר DL ללא עמלה בתנאי שהוזנה הערת קורפורייט."
-    ],
-    tag:"הברית המשולשת"
+      "לקוח מזוהה כעסקי, מטופל בקדימות.",
+      "ללא עמלה בתנאי שהוזנה הערת קורפורייט."
+    ]
   },
   {
     name:"Turkish Airlines",
     codes:["TK"],
-    color:"#E30613",
-    logo:"https://logo.clearbit.com/turkishairlines.com",
+    color:"#C8001E",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Turkish_Airlines_logo_2019_compact.svg/320px-Turkish_Airlines_logo_2019_compact.svg.png",
     price:"FXR/R,U571844",
     payment:"FPCASH",
     corporate:"FT*24639CCC · SR CLIDTKHK/24639000TKCCC",
     notes:[
       "Tour Code נכנס אוטומטית עם הדאטה.",
-      "הטבת הושבה רק בשימוש בתעריף הסכם.",
+      "הטבת הושבה רק בשימוש בתעריף ההסכם.",
       "POO: Israel, Uzbekistan, China, India, Sri Lanka, Moldova, Azerbaijan.",
-      "כל יעד שרשום כ-POO ומתמחר הסכם כולל עמלה גם אם לא יציאה מתל אביב."
-    ],
-    tag:"כשאין ישיר — יש איסטנבול"
+      "יציאה מ-POO כוללת עמלה גם ממדינות שאינן TLV."
+    ]
   },
   {
     name:"ITA Airways",
     codes:["AZ"],
     color:"#006B7F",
-    logo:"https://logo.clearbit.com/ita-airways.com",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/ITA_Airways_Logo.svg/320px-ITA_Airways_Logo.svg.png",
     price:"FXR/R,U131472",
     payment:"FPCASH",
     corporate:"SR CLID AZ HK/131472AZ · OS YY FQTB 131472",
     notes:[
       "חובה להכניס את שתי הערות הקורפורייט.",
-      "תמחור כרטיס גמיש: FXB/R,U131472/FF-ECOFLEX.",
-      "הושבה רגילה גם כשאין מחיר הסכם — ניתן להוסיף OSI.",
+      "כרטיס גמיש: FXB/R,U131472/FF-ECOFLEX",
+      "הושבה רגילה אפשרית גם ללא מחיר הסכם — להוסיף OSI.",
       "הזזת Time Limit."
-    ],
-    tag:"איטלקי, אבל עם סדר"
+    ]
   },
   {
-    name:"Lufthansa Group / United / Air Canada",
+    name:"Lufthansa / United / Air Canada",
     codes:["LH","LX","OS","SN","UA","AC"],
     color:"#05164D",
-    logo:"https://logo.clearbit.com/lufthansa.com",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Lufthansa_Logo_2018.svg/320px-Lufthansa_Logo_2018.svg.png",
     price:"FXR/R,U306866",
     payment:"FPCASH",
     corporate:"FT*1CF306866",
     notes:[
-      "כולל: Air Canada, Lufthansa, Swiss, Brussels, Austrian, United.",
-      "אם מתמחרים עם קורפורייט זה נכנס אוטומטית, אם לא — להזין FT.",
-      "תמחור ללא עלויות ביטול/שינוי: FXR/R,U306866*NPE.",
-      "ההסכם לאירופה, צפון, מרכז ודרום אמריקה.",
-      "ניתן לשלב בין חברות התעופה."
-    ],
-    tag:"קונקשנים עם עניבה"
+      "כולל: Lufthansa, Swiss, Brussels, Austrian, United, Air Canada.",
+      "עם קורפורייט נכנס אוטומטית, בלעדיו — להזין FT.",
+      "ללא ביטול/שינוי: FXR/R,U306866*NPE",
+      "ההסכם לאירופה, צפ׳, מרכז ודרום אמריקה.",
+      "ניתן לשלב חברות."
+    ]
   },
   {
     name:"Air Europa",
     codes:["UX"],
     color:"#1D4F91",
-    logo:"https://logo.clearbit.com/aireuropa.com",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Air_Europa_logo_2015.svg/320px-Air_Europa_logo_2015.svg.png",
     price:"FXR/R,U521702",
     payment:"FPCASH",
     corporate:"FT*521702",
     notes:[
       "הערת קורפורייט חובה.",
-      "אם מתמחרים עם קורפורייט זה נכנס אוטומטית, אם לא — להזין FT.",
-      "תמחור כרטיס גמיש: FXR/FF-FLEX/R,U521702.",
-      "ההסכם לכל יעדי Air Europa, לא רק ליציאה מישראל."
-    ],
-    tag:"ספרד בלי דרמה"
+      "עם קורפורייט נכנס אוטומטית, בלעדיו — להזין FT.",
+      "כרטיס גמיש: FXR/FF-FLEX/R,U521702",
+      "ההסכם לכל יעדי Air Europa, לא רק TLV."
+    ]
   },
   {
     name:"American / British / Iberia / JAL",
     codes:["AA","BA","IB","JL"],
-    color:"#2A2A2A",
-    logo:"https://logo.clearbit.com/britishairways.com",
+    color:"#1a1a1a",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/British_Airways_Logo.svg/320px-British_Airways_Logo.svg.png",
     price:"FXR/R,U045249",
     payment:"FPCASH",
     corporate:"FT*IN17813GB · SR CLIDAAHK/AAIN17813GB · SR CLIDIBHK/IN17813D01 · SR CLIDBAHK/IN17813D01",
     notes:[
-      "הערת קורפורייט חובה.",
-      "Ticket Designator: AA XPRSEU, JL/BA CED, IB E9CED.",
-      "אם מתמחרים עם קורפורייט זה נכנס אוטומטית, אם לא — להזין FT.",
-      "ההסכם לכל היעדים וניתן לשלב בין חברות התעופה."
-    ],
-    tag:"OneWorld, הרבה אותיות"
+      "Ticket Designator: AA XPRSEU · JL/BA CED · IB E9CED",
+      "עם קורפורייט נכנס אוטומטית, בלעדיו — להזין FT.",
+      "ההסכם לכל היעדים, ניתן לשלב חברות."
+    ]
   },
   {
     name:"Ethiopian Airlines",
     codes:["ET"],
-    color:"#078930",
-    logo:"https://logo.clearbit.com/ethiopianairlines.com",
+    color:"#046b28",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Ethiopian_Airlines_Logo.svg/320px-Ethiopian_Airlines_Logo.svg.png",
     price:"FXR/R,U*TLV133",
     payment:"FPCASH",
     corporate:"FT*133TLV · OSET CORPORATE TLVCO133",
     notes:[
-      "הערות קורפורייט חובה.",
-      "ההסכם לכל היעדים של Ethiopian.",
+      "שתי הערות קורפורייט חובה.",
+      "ההסכם לכל יעדי Ethiopian.",
       "תקף לכל המחלקות, ליציאה מהארץ."
-    ],
-    tag:"אדיס זה כבר שער"
+    ]
   },
   {
     name:"Air Baltic",
     codes:["BT"],
-    color:"#B7D432",
-    logo:"https://logo.clearbit.com/airbaltic.com",
+    color:"#4a6e00",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Air_Baltic_Logo.svg/320px-Air_Baltic_Logo.svg.png",
     price:"FXR/R,U306866",
     payment:"FPCASH",
     corporate:"OSBT 0005ITCMPIL",
     notes:[
-      "ההסכם הוא למחיר FLEX.",
-      "מחיר רגיל יכול להיות זול יותר — לבדוק לפני כרטוס."
-    ],
-    tag:"בלטי, גמיש, לפעמים יקר"
+      "ההסכם למחיר FLEX בלבד.",
+      "לבדוק מחיר רגיל לפני כרטוס — לפעמים זול יותר."
+    ]
   },
   {
     name:"Emirates",
     codes:["EK"],
-    color:"#D71920",
-    logo:"https://logo.clearbit.com/emirates.com",
+    color:"#b5001a",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Emirates_logo.svg/320px-Emirates_logo.svg.png",
     price:"FXX/R,U244022",
     payment:"FPCASH",
     corporate:"FT*ZZIHQ3ZZ",
     notes:[
       "Tour Code חובה.",
-      "תמחור לפי פקודת הסכם.",
-      "יש לוודא שהנתונים נכנסו לפני כרטוס."
-    ],
-    tag:"דובאי סטייל"
+      "לוודא שהנתונים נכנסו לפני כרטוס."
+    ]
   },
   {
     name:"Azerbaijan Airlines",
     codes:["J2"],
-    color:"#00A3E0",
-    logo:"https://logo.clearbit.com/azal.az",
+    color:"#007bb5",
+    logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/AZAL_logo.svg/320px-AZAL_logo.svg.png",
     price:"FXX/R,U333075",
     payment:"FPCASH",
     corporate:"FT*ILD00008",
     notes:[
       "Tour Code חובה.",
-      "תמחור לפי פקודת הסכם.",
-      "יש לוודא התאמה לפני כרטוס."
-    ],
-    tag:"הפתעת באקו"
+      "לוודא התאמה לפני כרטוס."
+    ]
   }
 ];
 
-const cards = document.getElementById("cards");
-const search = document.getElementById("searchInput");
-const count = document.getElementById("count");
+const cardsEl  = document.getElementById("cards");
+const noResult = document.getElementById("noResults");
+const searchEl = document.getElementById("searchInput");
+const countEl  = document.getElementById("searchCount");
+let debounce;
 
-function render(list){
-  cards.innerHTML = "";
-  count.textContent = list.length;
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  list.forEach(a => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="top" style="background:linear-gradient(135deg, ${a.color}, #07182f);">
-        <div>
-          <h2 class="airline-name">${a.name}</h2>
-          <div class="codes">${a.codes.map(c => `<span class="code">${c}</span>`).join("")}</div>
-        </div>
-        <img class="logo" src="${a.logo}" alt="${a.name}" onerror="this.style.display='none'">
-      </div>
-      <div class="body">
-        <div class="row">
-          <div class="label">פקודת תמחור</div>
-          <div class="value">${a.price}</div>
-        </div>
-        <div class="row">
-          <div class="label">אמצעי תשלום</div>
-          <div class="value">${a.payment}</div>
-        </div>
-        <div class="row">
-          <div class="label">קורפורייט / Tour Code / OSI</div>
-          <div class="value">${a.corporate}</div>
-        </div>
-        <ul class="notes">
-          ${a.notes.map(n => `<li>${n}</li>`).join("")}
-        </ul>
-        <div class="tagline">${a.tag}</div>
-      </div>
-    `;
-    cards.appendChild(card);
+function highlight(text,q){
+  if(!q) return esc(text);
+  const safe=q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  return esc(text).replace(new RegExp(`(${safe})`,"gi"),"<mark>$1</mark>");
+}
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent="✓"; btn.classList.add("copied");
+    setTimeout(()=>{ btn.textContent="⧉"; btn.classList.remove("copied"); },1400);
+  }).catch(()=>{
+    const ta=document.createElement("textarea");
+    ta.value=text; ta.style.cssText="position:fixed;opacity:0";
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+    btn.textContent="✓"; btn.classList.add("copied");
+    setTimeout(()=>{ btn.textContent="⧉"; btn.classList.remove("copied"); },1400);
   });
 }
 
-search.addEventListener("input", e => {
-  const q = e.target.value.trim().toLowerCase();
-  const filtered = airlines.filter(a => {
-    const blob = [
-      a.name,
-      a.codes.join(" "),
-      a.price,
-      a.payment,
-      a.corporate,
-      a.notes.join(" "),
-      a.tag
-    ].join(" ").toLowerCase();
+function cmdRow(label,value,q){
+  const rawVal = value.replace(/'/g,"\\'");
+  return `<div class="cmd-row">
+    <div class="cmd-label">${label}</div>
+    <div class="cmd-val">${highlight(value,q)}<button class="copy-btn" title="העתק" onclick="copyText('${rawVal}',this)">⧉</button></div>
+  </div>`;
+}
 
-    return blob.includes(q);
+function render(list,q){
+  cardsEl.innerHTML="";
+  noResult.style.display=list.length?"none":"block";
+  countEl.textContent=list.length<airlines.length?`${list.length} / ${airlines.length}`:`${airlines.length} הסכמים`;
+
+  list.forEach((a,i)=>{
+    const card=document.createElement("article");
+    card.className="card";
+    card.style.animationDelay=`${i*0.04}s`;
+
+    const corpParts=a.corporate.split(" · ");
+    const corpRows=corpParts.map((c,idx)=>cmdRow(idx===0?"קורפורייט / Tour Code / OSI":"",c,q)).join("");
+
+    card.innerHTML=`
+      <div class="card-head" style="background:linear-gradient(135deg,${a.color}dd,${a.color}88);">
+        <div class="airline-info">
+          <div class="airline-name">${highlight(a.name,q)}</div>
+          <div class="codes">${a.codes.map(c=>`<span class="code">${highlight(c,q)}</span>`).join("")}</div>
+        </div>
+        <img class="airline-logo" src="${a.logo}" alt="${a.name}" loading="lazy" onerror="this.style.display='none'"/>
+      </div>
+      <div class="card-body">
+        ${cmdRow("פקודת תמחור",a.price,q)}
+        ${cmdRow("אמצעי תשלום",a.payment,q)}
+        ${corpRows}
+        <div class="card-divider"></div>
+        <ul class="notes">${a.notes.map(n=>`<li>${highlight(n,q)}</li>`).join("")}</ul>
+      </div>`;
+    cardsEl.appendChild(card);
   });
-  render(filtered);
+}
+
+searchEl.addEventListener("input",e=>{
+  clearTimeout(debounce);
+  debounce=setTimeout(()=>{
+    const q=e.target.value.trim().toLowerCase();
+    render(q?airlines.filter(a=>[a.name,...a.codes,a.price,a.payment,a.corporate,...a.notes].join(" ").toLowerCase().includes(q)):airlines,q);
+  },60);
 });
 
-render(airlines);
+render(airlines,"");
 </script>
-
 </body>
 </html>
