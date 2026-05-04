@@ -3,292 +3,937 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DELAY - Knowledge Hub</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>DELAY · Knowledge Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* שימוש במשתנים מאפשר שינוי עיצוב מהיר בעתיד */
     :root {
-      --primary-color: #0b1f3a;
-      --primary-hover: #16365d;
-      --bg-color: #f4f7fb;
-      --card-bg: #ffffff;
-      --text-color: #333333;
-      --error-color: #d93025;
-      --border-color: #cccccc;
-      --transition: 0.3s ease;
+      --navy:    #071b34;
+      --navy2:   #0f2e52;
+      --navy3:   #1a4a7a;
+      --gold:    #d4a843;
+      --gold2:   #f0cc7a;
+      --gold-glow: rgba(212,168,67,0.35);
+      --bg:      #08111f;
+      --surface: rgba(255,255,255,0.04);
+      --surface2: rgba(255,255,255,0.08);
+      --border:  rgba(255,255,255,0.09);
+      --text:    #e8edf5;
+      --muted:   #7a8fa8;
+      --error:   #f87171;
+      --radius:  20px;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
       font-family: 'Rubik', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-
-    .hidden { 
-      display: none !important; 
-    }
-
-    /* מסך התחברות */
-    .center-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
-      padding: 20px;
+      overflow-x: hidden;
     }
 
-    .card {
-      background: var(--card-bg);
-      padding: 40px 30px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-      transition: transform var(--transition);
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
-    }
+    .hidden { display: none !important; }
 
-    .card img {
-      width: 90px;
-      margin-bottom: 15px;
-    }
-
-    .card h2 {
-      margin: 0 0 5px 0;
-      color: var(--primary-color);
-    }
-
-    .card p {
-      margin: 0 0 25px 0;
-      color: #666;
-      font-size: 0.95rem;
-    }
-
-    .input-group {
-      margin-bottom: 15px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      font-family: inherit;
-      font-size: 1rem;
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(11, 31, 58, 0.1);
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      background: var(--primary-color);
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 1rem;
-      font-family: inherit;
-      transition: background-color var(--transition), transform 0.1s;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background: var(--primary-hover);
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .error {
-      color: var(--error-color);
-      margin-top: 15px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      min-height: 20px; /* מונע קפיצת מסך כשמופיע טקסט שגיאה */
-    }
-
-    /* אזור האפליקציה */
-    .app-container {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .app-container h1 {
-      color: var(--primary-color);
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .grid {
+    /* ═══════════════════════════════
+       LOGIN
+    ═══════════════════════════════ */
+    .login-scene {
+      min-height: 100vh;
       display: grid;
-      /* הופך את הגריד לרספונסיבי לחלוטין בלי Media Queries */
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
+      place-items: center;
+      padding: 24px;
+      position: relative;
     }
 
-    .box {
-      background: var(--card-bg);
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    /* ambient orbs */
+    .login-scene::before, .login-scene::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .login-scene::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(212,168,67,0.18), transparent 70%);
+      top: -120px; right: -120px;
+    }
+    .login-scene::after {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(26,74,122,0.35), transparent 70%);
+      bottom: -80px; left: -80px;
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(12, 22, 40, 0.85);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 44px 36px 40px;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 32px 64px rgba(0,0,0,0.5),
+        0 0 80px rgba(212,168,67,0.07);
+      animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity:0; transform: translateY(28px) scale(0.96); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    .login-logo-wrap {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      transition: box-shadow var(--transition), transform var(--transition);
+      align-items: center;
+      margin-bottom: 28px;
     }
 
-    .box:hover {
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      transform: translateY(-3px);
+    .logo-ring {
+      width: 80px; height: 80px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--navy2), var(--navy3));
+      border: 1px solid rgba(212,168,67,0.3);
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 4px rgba(212,168,67,0.08);
+      position: relative;
+      overflow: hidden;
     }
 
-    .box h3 {
-      margin: 0 0 20px 0;
-      color: var(--primary-color);
+    .logo-ring::after {
+      content: '✈';
+      font-size: 36px;
+      position: absolute;
+      opacity: 0.12;
+      transform: rotate(-20deg);
+      color: var(--gold2);
     }
 
-    .box a {
-      display: block;
-      background: var(--primary-color);
-      color: white;
-      padding: 12px;
-      border-radius: 10px;
-      text-decoration: none;
-      text-align: center;
+    .logo-ring img {
+      width: 54px; height: 54px;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-brand {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .login-tagline {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.85rem;
       font-weight: 500;
-      transition: background-color var(--transition);
+      letter-spacing: 0.5px;
     }
 
-    .box a:hover {
-      background: var(--primary-hover);
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-icon {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 15px 46px 15px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-family: 'Rubik', sans-serif;
+      font-size: 0.97rem;
+      text-align: right;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input[type="email"]::placeholder,
+    input[type="password"]::placeholder {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--gold);
+      background: rgba(212,168,67,0.06);
+      box-shadow: 0 0 0 3px rgba(212,168,67,0.15);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold), #b8892e);
+      color: var(--navy);
+      font-family: 'Rubik', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.18));
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(212,168,67,0.35), 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn-login:hover::before { opacity: 1; }
+    .btn-login:active { transform: translateY(0); }
+
+    .error-msg {
+      min-height: 22px;
+      margin-top: 14px;
+      color: var(--error);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .error-msg:not(:empty)::before { content: '⚠'; }
+
+    .login-footer {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* ═══════════════════════════════
+       APP
+    ═══════════════════════════════ */
+    .app-root {
+      min-height: 100vh;
+      position: relative;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(16px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(8,17,31,0.82);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-brand {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .user-avatar {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--navy2), var(--navy3));
+      border: 1px solid rgba(212,168,67,0.3);
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+    }
+
+    .btn-logout {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Rubik', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      width: auto;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-logout:hover {
+      border-color: var(--error);
+      color: var(--error);
+      background: rgba(248,113,113,0.07);
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Hero */
+    .hero-section {
+      padding: 48px 32px 32px;
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      padding: 38px 44px;
+      background: linear-gradient(130deg, rgba(15,46,82,0.95) 0%, rgba(7,27,52,0.98) 60%, rgba(26,74,122,0.4) 100%);
+      border: 1px solid rgba(212,168,67,0.18);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    /* decorative grid */
+    .hero-inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(212,168,67,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,168,67,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    .hero-plane {
+      position: absolute;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 160px;
+      opacity: 0.04;
+      filter: blur(1px);
+    }
+
+    .hero-logo-box {
+      position: relative;
+      z-index: 1;
+      width: 100px; height: 100px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(212,168,67,0.25);
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3), 0 0 0 4px rgba(212,168,67,0.06);
+    }
+
+    .hero-logo-box img {
+      width: 70px; height: 70px;
+      object-fit: contain;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #fff 30%, var(--gold2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: rgba(220,230,245,0.75);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .hero-subtitle span {
+      color: var(--gold2);
+      font-weight: 700;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .htag {
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(212,168,67,0.2);
+      background: rgba(212,168,67,0.07);
+      color: var(--gold2);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Grid */
+    .cards-section {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 20px 32px 60px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .hub-card {
+      position: relative;
+      background: rgba(12,22,40,0.8);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      backdrop-filter: blur(12px);
+      cursor: default;
+    }
+
+    .hub-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      background: linear-gradient(135deg, rgba(212,168,67,0.06), transparent 60%);
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .hub-card:hover {
+      border-color: rgba(212,168,67,0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 28px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(212,168,67,0.1);
+    }
+
+    .hub-card:hover::before { opacity: 1; }
+
+    .card-image-wrap {
+      height: 185px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.75) saturate(0.8);
+    }
+
+    .hub-card:hover .card-image-wrap img {
+      transform: scale(1.07);
+      filter: brightness(0.85) saturate(1);
+    }
+
+    .card-image-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,17,31,0.95) 0%, rgba(8,17,31,0.3) 55%, transparent 100%);
+    }
+
+    .card-badge {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      z-index: 2;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(212,168,67,0.92);
+      color: var(--navy);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+
+    .card-icon-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 2;
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(8,17,31,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .card-body {
+      padding: 22px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: 0.3px;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+      flex: 1;
+    }
+
+    .card-footer {
+      margin-top: 8px;
+    }
+
+    .card-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 13px 18px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(212,168,67,0.15), rgba(212,168,67,0.05));
+      border: 1px solid rgba(212,168,67,0.25);
+      color: var(--gold2);
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: var(--transition);
+      letter-spacing: 0.3px;
+    }
+
+    .card-link:hover {
+      background: linear-gradient(135deg, rgba(212,168,67,0.28), rgba(212,168,67,0.12));
+      border-color: rgba(212,168,67,0.5);
+      box-shadow: 0 8px 24px rgba(212,168,67,0.15);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .link-arrow {
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .card-link:hover .link-arrow {
+      transform: translateX(-4px);
+    }
+
+    /* Footer */
+    .app-footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .app-footer strong {
+      color: var(--gold);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        justify-items: center;
+      }
+      .hero-title { font-size: 40px; }
+      .hero-tags { justify-content: center; }
+      .topbar { padding: 0 18px; }
+      .hero-section, .cards-section { padding-left: 18px; padding-right: 18px; }
+    }
+
+    @media (max-width: 600px) {
+      .topbar-user span { display: none; }
+      .hero-title { font-size: 34px; }
+      .hero-inner { padding: 26px 22px; }
+    }
+
+    /* ─── FOCUS VISIBLE ─── */
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+      border-radius: 6px;
     }
   </style>
 </head>
-
 <body>
 
-<div id="login" class="center-wrapper">
-  <div class="card">
-    <img src="logo.png" alt="לוגו DELAY" onerror="this.style.display='none'">
-    <h2>DELAY</h2>
-    <p>יום אחד נלמד לעבוד</p>
+  <!-- ═══════════════════ LOGIN ═══════════════════ -->
+  <div id="login" class="login-scene">
+    <div class="login-card" role="main">
+      <div class="login-logo-wrap">
+        <div class="logo-ring">
+          <img src="logo.png" alt="DELAY Logo" onerror="this.style.display='none'">
+        </div>
+        <div class="login-brand">DELAY</div>
+        <div class="login-tagline">יום אחד נלמד לעבוד</div>
+      </div>
 
-    <div class="input-group">
-      <input id="email" type="email" placeholder="מייל" aria-label="מייל">
-    </div>
-    <div class="input-group">
-      <input id="password" type="password" placeholder="סיסמה" aria-label="סיסמה">
-    </div>
+      <div class="field-group">
+        <div class="field-wrap">
+          <span class="field-icon">✉</span>
+          <input id="email" type="email" placeholder="כתובת מייל" autocomplete="email" aria-label="כתובת מייל">
+        </div>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input id="password" type="password" placeholder="סיסמה" autocomplete="current-password" aria-label="סיסמה">
+        </div>
+      </div>
 
-    <button id="loginBtn">כניסה</button>
-    <div id="error" class="error"></div>
-  </div>
-</div>
+      <button id="loginBtn" class="btn-login" aria-label="כניסה למערכת">כניסה למערכת</button>
+      <div id="error" class="error-msg" role="alert" aria-live="polite"></div>
 
-<div id="app" class="hidden app-container">
-  <h1>DELAY Knowledge Hub</h1>
-  <div class="grid">
-    <div class="box">
-      <h3>נוסעים</h3>
-      <a href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer">כניסה</a>
-    </div>
-<div class="box">
-  <h3>הסכמי תעופה</h3>
-  <a href="https://notebooklm.google.com/notebook/de0eede9-9e39-49cb-ad72-94299bdf4583" target="_blank" rel="noopener noreferrer">כניסה</a>
-</div>
-    <div class="box">
-      <h3>קצובת מלונות</h3>
-      <a href="https://avcohn.github.io/Avcohn/GovHotelRatesIL/" target="_blank" rel="noopener noreferrer">כניסה</a>
-    </div>
-    <div class="box">
-      <h3>אמדאוס</h3>
-      <a href="https://notebooklm.google.com/" target="_blank" rel="noopener noreferrer">כניסה</a>
+      <div class="login-footer">DELAY Knowledge Hub · גישה פנימית בלבד</div>
     </div>
   </div>
-</div>
 
-<script>
-  const allowedEmails = [
-    "avic@amsalem.com",
-    "marina@amsalem.com"
-  ];
-  const passwordCorrect = "Delay2026";
+  <!-- ═══════════════════ APP ═══════════════════ -->
+  <div id="app" class="app-root hidden">
 
-  // שמירת אלמנטים למשתנים לגישה מהירה ויעילה
-  const loginContainer = document.getElementById("login");
-  const appContainer = document.getElementById("app");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const errorDisplay = document.getElementById("error");
-  const loginBtn = document.getElementById("loginBtn");
+    <header class="topbar" role="banner">
+      <div class="topbar-brand">DELAY</div>
+      <div class="topbar-right">
+        <div class="topbar-user">
+          <div class="user-avatar" aria-hidden="true">👤</div>
+          <span id="topbar-email"></span>
+        </div>
+        <button class="btn-logout" id="logoutBtn" aria-label="יציאה מהמערכת">יציאה</button>
+      </div>
+    </header>
 
-  function attemptLogin() {
-    // איפוס שגיאות קודמות
-    errorDisplay.innerText = "";
-    
-    const email = emailInput.value.toLowerCase().trim();
-    const password = passwordInput.value.trim();
+    <section class="hero-section" aria-label="כותרת ראשית">
+      <div class="hero-inner">
+        <span class="hero-plane" aria-hidden="true">✈</span>
+        <div class="hero-logo-box">
+          <img src="logo.png" alt="לוגו DELAY" onerror="this.style.display='none'">
+        </div>
+        <div class="hero-text">
+          <h1 class="hero-title">DELAY</h1>
+          <p class="hero-subtitle">
+            מערכת ניהול ידע לצוות משרדי ממשלה<br>
+            <span>בינתיים — נשאל את המערכת.</span>
+          </p>
+          <div class="hero-tags">
+            <span class="htag">✈ הסכמי תעופה</span>
+            <span class="htag">🏨 קצובת מלונות</span>
+            <span class="htag">🖥 אמדאוס</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    // בדיקה ששדות לא ריקים
-    if (!email || !password) {
-      errorDisplay.innerText = "נא להזין מייל וסיסמה";
-      return;
+    <section class="cards-section" aria-label="מודולי ידע">
+      <div class="section-label">מודולי ידע</div>
+      <div class="cards-grid">
+
+        <!-- CARD 1 -->
+        <article class="hub-card" aria-label="הסכמי תעופה">
+          <div class="card-image-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80"
+              alt="הסכמי תעופה — מטוסים בשדה תעופה"
+              loading="lazy">
+            <div class="card-icon-badge" aria-hidden="true">✈</div>
+            <div class="card-badge">FLIGHTS</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">הסכמי תעופה</div>
+            <p class="card-desc">הסכמי קורפורייט, פקודות תמחור, הערות קורפורייט, אמצעי תשלום, TOUR CODE והטבות לפי חברות תעופה.</p>
+            <div class="card-footer">
+              <a
+                class="card-link"
+                href="https://notebooklm.google.com/notebook/de0eede9-9e39-49cb-ad72-94299bdf4583"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="פתח הסכמי תעופה (נפתח בחלון חדש)">
+                פתח הסכמי תעופה
+                <span class="link-arrow" aria-hidden="true">←</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="hub-card" aria-label="קצובת מלונות">
+          <div class="card-image-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80"
+              alt="קצובת מלונות — לובי מלון"
+              loading="lazy">
+            <div class="card-icon-badge" aria-hidden="true">🏨</div>
+            <div class="card-badge">HOTELS</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">קצובת מלונות</div>
+            <p class="card-desc">טבלת קצובות מלונות לפי מדינות ויעדים, כולל גישה מהירה למידע התפעולי הנדרש מול לקוחות ממשלתיים.</p>
+            <div class="card-footer">
+              <a
+                class="card-link"
+                href="https://avcohn.github.io/Avcohn/GovHotelRatesIL/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="פתח קצובת מלונות (נפתח בחלון חדש)">
+                פתח קצובת מלונות
+                <span class="link-arrow" aria-hidden="true">←</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 3 -->
+        <article class="hub-card" aria-label="אמדאוס">
+          <div class="card-image-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80"
+              alt="אמדאוס — מסך מחשב עם נתונים"
+              loading="lazy">
+            <div class="card-icon-badge" aria-hidden="true">🖥</div>
+            <div class="card-badge">AMADEUS</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">אמדאוס</div>
+            <p class="card-desc">פקודות, קיצורים, תקלות נפוצות, הודעות שגיאה ופתרונות מהשטח — כדי שלא נחפש כל פעם מחדש.</p>
+            <div class="card-footer">
+              <a
+                class="card-link"
+                href="https://notebooklm.google.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="פתח אמדאוס (נפתח בחלון חדש)">
+                פתח אמדאוס
+                <span class="link-arrow" aria-hidden="true">←</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <footer class="app-footer" role="contentinfo">
+      <strong>DELAY</strong> Knowledge Hub &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; <span id="footer-year"></span>
+    </footer>
+
+  </div>
+
+  <script>
+    /* ── CONFIG ── */
+    const ALLOWED_EMAILS = [
+      "avic@amsalem.com",
+      "marina@amsalem.com"
+    ];
+    const PASSWORD = "Delay2026";
+
+    /* ── ELEMENTS ── */
+    const loginEl    = document.getElementById("login");
+    const appEl      = document.getElementById("app");
+    const emailIn    = document.getElementById("email");
+    const passwordIn = document.getElementById("password");
+    const errorEl    = document.getElementById("error");
+    const loginBtn   = document.getElementById("loginBtn");
+    const logoutBtn  = document.getElementById("logoutBtn");
+    const topbarEmail= document.getElementById("topbar-email");
+
+    /* ── FOOTER YEAR ── */
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+    /* ── HELPERS ── */
+    function showError(msg) {
+      errorEl.textContent = msg;
+      emailIn.setAttribute("aria-invalid", "true");
+      passwordIn.setAttribute("aria-invalid", "true");
     }
 
-    if (!allowedEmails.includes(email)) {
-      errorDisplay.innerText = "אין לך הרשאה";
-      return;
+    function clearError() {
+      errorEl.textContent = "";
+      emailIn.removeAttribute("aria-invalid");
+      passwordIn.removeAttribute("aria-invalid");
     }
 
-    if (password !== passwordCorrect) {
-      errorDisplay.innerText = "סיסמה שגויה";
-      return;
-    }
+    /* ── LOGIN ── */
+    function attemptLogin() {
+      clearError();
+      const email    = emailIn.value.trim().toLowerCase();
+      const password = passwordIn.value.trim();
 
-    // הצלחה
-    loginContainer.classList.add("hidden");
-    appContainer.classList.remove("hidden");
-  }
-
-  // חיבור אירוע לחיצה לכפתור (גישה נכונה יותר מ-onclick ב-HTML)
-  loginBtn.addEventListener("click", attemptLogin);
-
-  // תמיכה בלחיצה על מקש Enter
-  [emailInput, passwordInput].forEach(input => {
-    input.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault(); // מונע התנהגות ברירת מחדל של טפסים
-        attemptLogin();
+      if (!email || !password) {
+        showError("נא להזין מייל וסיסמה");
+        return;
       }
+      if (!ALLOWED_EMAILS.includes(email)) {
+        showError("אין לך הרשאה לגשת למערכת");
+        return;
+      }
+      if (password !== PASSWORD) {
+        showError("סיסמה שגויה");
+        passwordIn.value = "";
+        passwordIn.focus();
+        return;
+      }
+
+      /* Success */
+      topbarEmail.textContent = email;
+      loginEl.classList.add("hidden");
+      appEl.classList.remove("hidden");
+      sessionStorage.setItem("delay_auth", email);
+    }
+
+    /* ── LOGOUT ── */
+    function logout() {
+      sessionStorage.removeItem("delay_auth");
+      emailIn.value = "";
+      passwordIn.value = "";
+      clearError();
+      appEl.classList.add("hidden");
+      loginEl.classList.remove("hidden");
+      emailIn.focus();
+    }
+
+    /* ── SESSION RESTORE ── */
+    (function restoreSession() {
+      const saved = sessionStorage.getItem("delay_auth");
+      if (saved && ALLOWED_EMAILS.includes(saved)) {
+        topbarEmail.textContent = saved;
+        loginEl.classList.add("hidden");
+        appEl.classList.remove("hidden");
+      }
+    })();
+
+    /* ── EVENTS ── */
+    loginBtn.addEventListener("click", attemptLogin);
+    logoutBtn.addEventListener("click", logout);
+
+    [emailIn, passwordIn].forEach(el => {
+      el.addEventListener("keydown", e => {
+        if (e.key === "Enter") { e.preventDefault(); attemptLogin(); }
+      });
+      el.addEventListener("input", clearError);
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
