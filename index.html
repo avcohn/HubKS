@@ -265,7 +265,7 @@
     }
 
     .hero-card{
-      min-height:310px;
+      min-height:300px;
       border-radius:38px;
       background:
         linear-gradient(135deg,rgba(18,52,90,.96),rgba(31,74,120,.9)),
@@ -320,52 +320,14 @@
       color:var(--gold);
       font-weight:800;
       letter-spacing:.8px;
-      margin-bottom:10px;
+      margin-bottom:12px;
       font-size:14px;
     }
 
     .hero h1{
       font-family:"Playfair Display",serif;
-      font-size:56px;
+      font-size:58px;
       line-height:1.05;
-      margin-bottom:14px;
-    }
-
-    .hero p{
-      color:rgba(255,255,255,.82);
-      line-height:1.85;
-      max-width:720px;
-      font-size:17px;
-    }
-
-    .quick-stats{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
-      margin-top:22px;
-    }
-
-    .stat{
-      background:rgba(255,250,241,.72);
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:18px;
-      box-shadow:0 12px 34px rgba(18,52,90,.08);
-    }
-
-    .stat b{
-      display:block;
-      color:var(--navy);
-      font-size:26px;
-      line-height:1;
-    }
-
-    .stat span{
-      display:block;
-      color:var(--muted);
-      margin-top:7px;
-      font-size:13px;
-      font-weight:700;
     }
 
     .content{
@@ -474,6 +436,7 @@
       box-shadow:0 18px 42px rgba(18,52,90,.18);
       transition:.28s ease;
       background:var(--navy);
+      isolation:isolate;
     }
 
     .portal-card img{
@@ -484,6 +447,7 @@
       object-fit:cover;
       z-index:1;
       transition:.45s ease;
+      filter:saturate(.9) contrast(.95) brightness(.78);
     }
 
     .portal-card:before{
@@ -492,8 +456,8 @@
       inset:0;
       z-index:2;
       background:
-        linear-gradient(180deg,rgba(18,52,90,.15),rgba(18,52,90,.88)),
-        linear-gradient(135deg,rgba(18,52,90,.78),rgba(62,101,150,.38));
+        radial-gradient(circle at 50% 42%, rgba(18,52,90,.25), rgba(18,52,90,.78) 58%, rgba(7,22,42,.95) 100%),
+        linear-gradient(135deg, rgba(18,52,90,.82), rgba(62,101,150,.48));
     }
 
     .portal-card:after{
@@ -511,6 +475,13 @@
       display:grid;
       gap:10px;
       place-items:center;
+      background:rgba(18,52,90,.48);
+      backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:20px;
+      padding:18px 20px;
+      max-width:92%;
+      box-shadow:0 14px 32px rgba(0,0,0,.22);
     }
 
     .portal-kicker{
@@ -524,6 +495,7 @@
       font-size:22px;
       font-weight:800;
       line-height:1.25;
+      text-shadow:0 2px 14px rgba(0,0,0,.45);
     }
 
     .portal-card:hover{
@@ -533,6 +505,7 @@
 
     .portal-card:hover img{
       transform:scale(1.08);
+      filter:saturate(1) contrast(1) brightness(.85);
     }
 
     .footer{
@@ -553,10 +526,6 @@
       }
 
       .hero h1{font-size:42px}
-
-      .quick-stats{
-        grid-template-columns:repeat(2,1fr);
-      }
 
       .fee-grid{
         grid-template-columns:1fr;
@@ -587,13 +556,6 @@
 
       .hero h1{font-size:34px}
 
-      .hero p{font-size:15px}
-
-      .quick-stats,
-      .link-buttons{
-        grid-template-columns:1fr;
-      }
-
       .content{
         padding:18px 16px 50px;
       }
@@ -604,6 +566,10 @@
 
       .login-card{
         padding:34px 24px;
+      }
+
+      .link-buttons{
+        grid-template-columns:1fr;
       }
 
       .portal-card{
@@ -623,7 +589,7 @@
       <div class="login-subtitle">חטיבת משרדי ממשלה</div>
 
       <p class="login-desc">
-        מערכת ניהול ידע להסכמי תעופה, פקודות אמדאוס, קצובות מלון ומידע תפעולי לחטיבת משרדי ממשלה.
+        מערכת ניהול ידע להסכמי תעופה, פקודות אמדאוס, קצובות מלון ומידע תפעולי.
       </p>
 
       <div class="login-fields">
@@ -661,18 +627,7 @@
         <div class="hero-text">
           <div class="eyebrow">GOVERNMENT DIVISION · AVIATION KNOWLEDGE HUB</div>
           <h1>כל הידע במקום אחד.</h1>
-          <p>
-            מרכז עבודה אלגנטי ונגיש להסכמי תעופה, קודי קורפורייט, פקודות תמחור,
-            דמי טיפול, קצובות מלון וכלים תפעוליים לחטיבת משרדי ממשלה.
-          </p>
         </div>
-      </div>
-
-      <div class="quick-stats">
-        <div class="stat"><b>2026</b><span>דמי טיפול מעודכנים</span></div>
-        <div class="stat"><b>GDS</b><span>פקודות בשליפה מהירה</span></div>
-        <div class="stat"><b>RTL</b><span>מותאם עברית</span></div>
-        <div class="stat"><b>PRO</b><span>עיצוב פרימיום</span></div>
       </div>
     </section>
 
@@ -710,7 +665,7 @@
           </a>
 
           <a class="portal-card" href="https://avcohn.github.io/Delay/Hotels" target="_blank">
-            <img src="2.png" alt="קצובת מלונות">
+            <img src="2.jpg" alt="קצובת מלונות">
             <div class="portal-content">
               <div class="portal-kicker">HOTELS</div>
               <div class="portal-title">קצובת מלונות</div>
@@ -718,7 +673,7 @@
           </a>
 
           <a class="portal-card" href="https://www.flightradar24.com/" target="_blank">
-            <img src="3.png" alt="FlightRadar">
+            <img src="3.jpg" alt="FlightRadar">
             <div class="portal-content">
               <div class="portal-kicker">LIVE OPS</div>
               <div class="portal-title">FlightRadar</div>
@@ -726,7 +681,7 @@
           </a>
 
           <a class="portal-card" href="https://notebooklm.google.com/notebook/b7858b97-8884-4641-b959-1b8f877bb146" target="_blank">
-            <img src="4.png" alt="אמדאוס">
+            <img src="4.jpg" alt="אמדאוס">
             <div class="portal-content">
               <div class="portal-kicker">AMADEUS</div>
               <div class="portal-title">אמדאוס<br>פקודות נפוצות</div>
