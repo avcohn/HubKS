@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-05-05T18:06:24Z",
+  "source": "initial fallback · replace automatically by GitHub Action",
+  "usdIlsRate": 2.961,
+  "ratesIlsPerUnit": {
+    "USD": 2.961,
+    "EUR": 3.4651,
+    "GBP": 3.9992,
+    "JPY": 0.018521,
+    "AUD": 2.1192,
+    "CAD": 2.1642,
+    "DKK": 0.4636,
+    "NOK": 0.3189,
+    "SEK": 0.3196,
+    "CHF": 3.7509,
+    "JOD": 4.1757,
+    "CNY": 0.406,
+    "HKD": 0.3815,
+    "NZD": 1.78,
+    "RUB": 0.0365,
+    "SAR": 0.7896,
+    "SGD": 2.28
+  }
+}
