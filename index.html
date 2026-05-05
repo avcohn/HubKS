@@ -423,13 +423,13 @@
 
     .fee-head h2{
       color:var(--navy);
-      font-size:29px;
+      font-size:22px;
     }
 
     .fee-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:14px;
+      gap:10px;
       margin-bottom:26px;
       position:relative;
       z-index:2;
@@ -438,24 +438,61 @@
     .fee-item{
       background:white;
       border:1px solid rgba(18,52,90,.12);
-      border-radius:23px;
-      padding:19px;
-      box-shadow:0 10px 24px rgba(18,52,90,.05);
+      border-radius:18px;
+      padding:13px 16px;
+      box-shadow:0 6px 16px rgba(18,52,90,.05);
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
     .fee-item strong{
       display:block;
       color:var(--muted);
-      font-size:14px;
-      margin-bottom:8px;
+      font-size:12px;
+      margin-bottom:0;
+      white-space:nowrap;
     }
 
     .fee-item span{
       color:var(--navy);
-      font-size:30px;
+      font-size:22px;
       font-weight:800;
       direction:ltr;
       display:block;
+      white-space:nowrap;
+    }
+
+    /* ── PORTALS SECTION ── */
+    .portals-section{
+      margin-top:20px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:16px;
+      position:relative;
+      z-index:2;
+    }
+
+    .section-icon{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--navy),var(--blue));
+      color:white;
+      font-size:19px;
+      box-shadow:0 10px 20px rgba(18,52,90,.18);
+      flex-shrink:0;
+    }
+
+    .section-head h2{
+      color:var(--navy);
+      font-size:22px;
     }
 
     .link-buttons{
@@ -696,7 +733,7 @@
         </div>
 
         <div class="hero-text">
-          <div class="eyebrow">GOVERNMENT DIVISION · KNOWLEDGE HUB</div>
+          <div class="eyebrow">GOVERNMENT DIVISION · AVIATION KNOWLEDGE HUB</div>
           <h1>כל הידע במקום אחד.</h1>
         </div>
       </div>
@@ -726,16 +763,22 @@
           </div>
         </div>
 
+        <div class="portals-section">
+        <div class="section-head">
+          <div class="section-icon">🔗</div>
+          <h2>מידע שימושי</h2>
+        </div>
+
         <div class="link-buttons">
-          <a class="portal-card" href="https://avcohn.github.io/HubKS/Airlines/" target="_blank">
-            <img src="1.png" alt="חברות תעופה">
+          <a class="portal-card" href="https://avcohn.github.io/Delay/Airlines/" target="_blank">
+            <img src="1.PNG" alt="חברות תעופה">
             <div class="portal-content">
               <div class="portal-kicker">AIRLINES</div>
               <div class="portal-title">חברות תעופה<br>הסכמים ממשלתיים</div>
             </div>
           </a>
 
-          <a class="portal-card" href="https://avcohn.github.io/HubKS/Hotels" target="_blank">
+          <a class="portal-card" href="https://avcohn.github.io/Delay/Hotels" target="_blank">
             <img src="2.jpg" alt="קצובת מלונות">
             <div class="portal-content">
               <div class="portal-kicker">HOTELS</div>
@@ -759,6 +802,7 @@
             </div>
           </a>
         </div>
+        </div><!-- /portals-section -->
       </section>
     </main>
 
