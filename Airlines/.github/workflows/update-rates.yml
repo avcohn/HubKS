@@ -1,0 +1,32 @@
+name: Update exchange rates
+
+on:
+  schedule:
+    # Daily at 08:10 Israel time during daylight saving time (05:10 UTC).
+    # GitHub schedules run in UTC.
+    - cron: "10 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-rates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch Bank of Israel rates
+        run: node scripts/update-rates.js
+
+      - name: Commit updated rates.json
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update Bank of Israel exchange rates"
+          file_pattern: rates.json
