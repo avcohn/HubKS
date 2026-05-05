@@ -1,852 +1,1167 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hub | חטיבת משרדי ממשלה</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --cream:#f5f1e8;
-      --paper:#fffaf1;
-      --navy:#12345a;
-      --blue:#3e6596;
-      --gold:#c8a96a;
-      --ink:#17304f;
-      --muted:#6d7d8f;
-      --line:rgba(18,52,90,.16);
-      --shadow:0 24px 70px rgba(18,52,90,.13);
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-
-    body{
-      font-family:"Heebo",sans-serif;
-      background:
-        radial-gradient(circle at 12% 10%, rgba(200,169,106,.18), transparent 28%),
-        radial-gradient(circle at 90% 15%, rgba(31,74,120,.12), transparent 30%),
-        linear-gradient(135deg,var(--cream),#fffaf1);
-      color:var(--ink);
-      min-height:100vh;
-    }
-
-    .hidden{display:none!important}
-
-    /* ── LOGIN ── */
-    .login{
-      min-height:100vh;
-      display:grid;
-      place-items:center;
-      padding:28px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .login:before{
-      content:"";
-      position:absolute;
-      width:720px;
-      height:720px;
-      border:1px solid rgba(18,52,90,.08);
-      border-radius:50%;
-      right:-260px;
-      top:-230px;
-    }
-
-    .login:after{
-      content:"✈";
-      position:absolute;
-      left:9%;
-      top:18%;
-      font-size:110px;
-      color:rgba(18,52,90,.08);
-      transform:rotate(-18deg);
-    }
-
-    .login-card{
-      width:100%;
-      max-width:470px;
-      background:rgba(255,250,241,.92);
-      backdrop-filter:blur(18px);
-      border:1px solid var(--line);
-      border-radius:34px;
-      padding:42px 36px 34px;
-      text-align:center;
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      animation:rise .55s ease both;
-    }
-
-    .login-card:before{
-      content:"";
-      position:absolute;
-      inset:14px;
-      border:1px solid rgba(200,169,106,.35);
-      border-radius:26px;
-      pointer-events:none;
-    }
-
-    @keyframes rise{
-      from{opacity:0;transform:translateY(18px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    /* ── LOGO CIRCLE ── */
-    .logo-circle{
-      width:155px;
-      height:155px;
-      border-radius:50%;
-      overflow:hidden;
-      margin:0 auto 16px;
-      border:3px solid rgba(200,169,106,.45);
-      box-shadow:0 8px 28px rgba(18,52,90,.18);
-      background:transparent;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .logo-circle img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-    }
-
-    .brand-title{
-      font-family:"Playfair Display",serif;
-      font-size:58px;
-      line-height:1;
-      letter-spacing:2px;
-      color:var(--navy);
-    }
-
-    .gold-line{
-      width:54px;
-      height:3px;
-      background:var(--gold);
-      border-radius:999px;
-      margin:18px auto 14px;
-    }
-
-    .login-subtitle{
-      font-size:17px;
-      color:var(--blue);
-      font-weight:700;
-      margin-bottom:24px;
-    }
-
-    .login-desc{
-      color:var(--muted);
-      line-height:1.8;
-      font-size:15px;
-      max-width:340px;
-      margin:0 auto 26px;
-    }
-
-    .login-fields{
-      display:grid;
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .field{
-      width:100%;
-      border:1px solid rgba(18,52,90,.18);
-      background:white;
-      color:var(--ink);
-      border-radius:18px;
-      padding:15px 18px;
-      font-size:15px;
-      outline:none;
-      text-align:right;
-      font-family:"Heebo",sans-serif;
-      transition:.2s;
-    }
-
-    .field:focus{
-      border-color:var(--navy);
-      box-shadow:0 0 0 4px rgba(18,52,90,.08);
-    }
-
-    .error-msg{
-      color:#c0392b;
-      font-size:13px;
-      font-weight:700;
-      margin-top:4px;
-      display:none;
-    }
-
-    .error-msg.visible{
-      display:block;
-    }
-
-    .btn{
-      border:0;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      text-decoration:none;
-      font-family:"Heebo",sans-serif;
-      transition:.25s;
-    }
-
-    .btn-primary{
-      width:100%;
-      margin-top:14px;
-      padding:15px 22px;
-      border-radius:999px;
-      background:linear-gradient(135deg,var(--navy),var(--blue));
-      color:white;
-      font-weight:800;
-      font-size:16px;
-      box-shadow:0 16px 32px rgba(18,52,90,.24);
-    }
-
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 22px 44px rgba(18,52,90,.28);
-    }
-
-    .login-footer{
-      margin-top:20px;
-      color:#8b8378;
-      font-size:12px;
-    }
-
-    /* ── TOPBAR ── */
-    .topbar{
-      height:72px;
-      position:sticky;
-      top:0;
-      z-index:100;
-      background:rgba(245,241,232,.86);
-      backdrop-filter:blur(18px);
-      border-bottom:1px solid var(--line);
-    }
-
-    .topbar-inner{
-      max-width:1220px;
-      margin:auto;
-      height:100%;
-      padding:0 24px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-    }
-
-    .mini-brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      color:var(--navy);
-      font-weight:800;
-    }
-
-    /* small circle in topbar */
-    .mini-logo-circle{
-      width:42px;
-      height:42px;
-      border-radius:50%;
-      overflow:hidden;
-      border:2px solid rgba(200,169,106,.4);
-      background:transparent;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-shrink:0;
-    }
-
-    .mini-logo-circle img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-    }
-
-    .nav-actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
-    .pill{
-      padding:9px 14px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,250,241,.72);
-      color:var(--muted);
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .logout{
-      padding:9px 14px;
-      border-radius:999px;
-      border:1px solid rgba(18,52,90,.18);
-      background:white;
-      color:var(--navy);
-      font-weight:800;
-    }
-
-    .logout:hover{
-      background:var(--navy);
-      color:white;
-    }
-
-    /* ── HERO ── */
-    .hero{
-      max-width:1220px;
-      margin:0 auto;
-      padding:46px 24px 24px;
-    }
-
-    .hero-card{
-      min-height:300px;
-      border-radius:38px;
-      background:
-        linear-gradient(135deg,rgba(18,52,90,.96),rgba(31,74,120,.9)),
-        url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=80");
-      background-size:cover;
-      background-position:center;
-      color:white;
-      padding:42px;
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      display:grid;
-      grid-template-columns:180px 1fr;
-      gap:34px;
-      align-items:center;
-    }
-
-    .hero-card:before{
-      content:"";
-      position:absolute;
-      inset:18px;
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:28px;
-      pointer-events:none;
-    }
-
-    /* hero logo circle */
-    .hero-logo-circle{
-      width:160px;
-      height:160px;
-      border-radius:50%;
-      overflow:hidden;
-      border:3px solid rgba(255,255,255,.3);
-      box-shadow:0 12px 36px rgba(0,0,0,.3);
-      background:transparent;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-logo-circle img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-    }
-
-    .hero-text{
-      position:relative;
-      z-index:2;
-    }
-
-    .eyebrow{
-      color:var(--gold);
-      font-weight:800;
-      letter-spacing:.8px;
-      margin-bottom:12px;
-      font-size:14px;
-    }
-
-    .hero h1{
-      font-family:"Playfair Display",serif;
-      font-size:58px;
-      line-height:1.05;
-    }
-
-    /* ── CONTENT ── */
-    .content{
-      max-width:1220px;
-      margin:0 auto;
-      padding:20px 24px 70px;
-    }
-
-    .fee-box{
-      background:rgba(255,250,241,.92);
-      border:1px solid var(--line);
-      border-radius:34px;
-      padding:30px;
-      box-shadow:0 18px 50px rgba(18,52,90,.10);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .fee-box:before{
-      content:"";
-      position:absolute;
-      inset:14px;
-      border:1px solid rgba(200,169,106,.22);
-      border-radius:25px;
-      pointer-events:none;
-    }
-
-    .fee-head{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:20px;
-      position:relative;
-      z-index:2;
-    }
-
-    .fee-icon{
-      width:48px;
-      height:48px;
-      border-radius:17px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,var(--navy),var(--blue));
-      color:white;
-      font-size:23px;
-      box-shadow:0 12px 24px rgba(18,52,90,.18);
-    }
-
-    .fee-head h2{
-      color:var(--navy);
-      font-size:22px;
-    }
-
-    .fee-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-bottom:26px;
-      position:relative;
-      z-index:2;
-    }
-
-    .fee-item{
-      background:white;
-      border:1px solid rgba(18,52,90,.12);
-      border-radius:18px;
-      padding:13px 16px;
-      box-shadow:0 6px 16px rgba(18,52,90,.05);
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .fee-item strong{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:0;
-      white-space:nowrap;
-    }
-
-    .fee-item span{
-      color:var(--navy);
-      font-size:22px;
-      font-weight:800;
-      direction:ltr;
-      display:block;
-      white-space:nowrap;
-    }
-
-    /* ── PORTALS SECTION ── */
-    .portals-section{
-      margin-top:20px;
-    }
-
-    .section-head{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:16px;
-      position:relative;
-      z-index:2;
-    }
-
-    .section-icon{
-      width:40px;
-      height:40px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,var(--navy),var(--blue));
-      color:white;
-      font-size:19px;
-      box-shadow:0 10px 20px rgba(18,52,90,.18);
-      flex-shrink:0;
-    }
-
-    .section-head h2{
-      color:var(--navy);
-      font-size:22px;
-    }
-
-    .link-buttons{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-      position:relative;
-      z-index:2;
-    }
-
-    .portal-card{
-      min-height:245px;
-      position:relative;
-      overflow:hidden;
-      border-radius:28px;
-      text-decoration:none;
-      color:white;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:24px;
-      box-shadow:0 18px 42px rgba(18,52,90,.18);
-      transition:.28s ease;
-      background:var(--navy);
-      isolation:isolate;
-    }
-
-    .portal-card img{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      z-index:1;
-      transition:.45s ease;
-      filter:saturate(1.06) contrast(1.04) brightness(.86);
-    }
-
-    .portal-card:before{
-      content:"";
-      position:absolute;
-      inset:0;
-      z-index:2;
-      background:
-        linear-gradient(180deg,rgba(18,52,90,.08),rgba(18,52,90,.55) 55%,rgba(7,22,42,.82)),
-        linear-gradient(135deg,rgba(18,52,90,.62),rgba(62,101,150,.22));
-      transition:.35s ease;
-    }
-
-    .portal-card:after{
-      content:"";
-      position:absolute;
-      inset:14px;
-      border:1px solid rgba(255,255,255,.25);
-      border-radius:20px;
-      z-index:3;
-      pointer-events:none;
-    }
-
-    .portal-content{
-      position:relative;
-      z-index:4;
-      display:grid;
-      gap:10px;
-      place-items:center;
-      background:rgba(18,52,90,.42);
-      backdrop-filter:blur(6px);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:20px;
-      padding:18px 20px;
-      max-width:92%;
-      box-shadow:0 14px 32px rgba(0,0,0,.22);
-      transition:.28s ease;
-    }
-
-    .portal-kicker{
-      font-size:12px;
-      letter-spacing:.8px;
-      color:var(--gold);
-      font-weight:800;
-    }
-
-    .portal-title{
-      font-size:22px;
-      font-weight:800;
-      line-height:1.25;
-      text-shadow:0 2px 14px rgba(0,0,0,.55);
-    }
-
-    .portal-card:hover{
-      transform:translateY(-5px);
-      box-shadow:0 26px 58px rgba(18,52,90,.28);
-    }
-
-    .portal-card:hover img{
-      transform:scale(1.08);
-      filter:saturate(1.15) contrast(1.06) brightness(.98);
-    }
-
-    .portal-card:hover:before{
-      background:
-        linear-gradient(180deg,rgba(18,52,90,.02),rgba(18,52,90,.35) 55%,rgba(7,22,42,.68)),
-        linear-gradient(135deg,rgba(18,52,90,.42),rgba(62,101,150,.12));
-    }
-
-    .portal-card:hover .portal-content{
-      background:rgba(18,52,90,.52);
-      transform:scale(1.02);
-    }
-
-    .footer{
-      border-top:1px solid var(--line);
-      background:rgba(235,226,210,.65);
-      text-align:center;
-      padding:22px;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
-    }
-
-    @media(max-width:980px){
-      .hero-card{
-        grid-template-columns:1fr;
-        text-align:center;
-        justify-items:center;
-      }
-
-      .hero h1{font-size:42px}
-
-      .fee-grid{
-        grid-template-columns:1fr;
-      }
-
-      .link-buttons{
-        grid-template-columns:repeat(2,1fr);
-      }
-    }
-
-    @media(max-width:640px){
-      .topbar-inner{padding:0 16px}
-      .pill{display:none}
-
-      .hero{
-        padding:28px 16px 16px;
-      }
-
-      .hero-card{
-        padding:30px 22px;
-        border-radius:30px;
-      }
-
-      .hero-logo-circle{
-        width:128px;
-        height:128px;
-      }
-
-      .hero h1{font-size:34px}
-
-      .content{
-        padding:18px 16px 50px;
-      }
-
-      .brand-title{
-        font-size:52px;
-      }
-
-      .login-card{
-        padding:34px 24px;
-      }
-
-      .logo-circle{
-        width:128px;
-        height:128px;
-      }
-
-      .link-buttons{
-        grid-template-columns:1fr;
-      }
-
-      .portal-card{
-        min-height:220px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>קצובות לינה בעולם | Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════ HUB DESIGN TOKENS ══════════════ */
+:root {
+  --cream:      #f5f1e8;
+  --paper:      #fffaf1;
+  --navy:       #12345a;
+  --blue:       #3e6596;
+  --gold:       #c8a96a;
+  --gold-light: #e8d4a8;
+  --ink:        #17304f;
+  --muted:      #6d7d8f;
+  --muted2:     #8d9db0;
+  --line:       rgba(18,52,90,.14);
+  --line2:      rgba(18,52,90,.08);
+  --shadow:     0 24px 70px rgba(18,52,90,.13);
+  --shadow-md:  0 10px 30px rgba(18,52,90,.10);
+  --green:      #2d7d5a;
+  --green-text: #1a5c3f;
+  --green-bg:   rgba(45,125,90,.10);
+  --r-xl:       34px;
+  --r-lg:       24px;
+  --r-md:       18px;
+  --r-sm:       12px;
+  --transition: .18s cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Heebo", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 8%,  rgba(200,169,106,.16), transparent 28%),
+    radial-gradient(circle at 92% 12%, rgba(18,52,90,.10),    transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(200,169,106,.08), transparent 40%),
+    linear-gradient(150deg, var(--cream) 0%, #fffaf1 55%, #f0eade 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* subtle grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  width: min(1380px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 20px 0 64px;
+}
+
+/* ══════════════ TOPBAR ══════════════ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245,241,232,.88);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid var(--line);
+  height: 68px;
+  margin-bottom: 28px;
+}
+
+.topbar-inner {
+  max-width: 1380px;
+  margin: auto;
+  height: 100%;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.mini-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--navy);
+  font-weight: 800;
+  font-size: 17px;
+  text-decoration: none;
+}
+
+.mini-logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(200,169,106,.45);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mini-logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.topbar-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,250,241,.72);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ══════════════ HERO ══════════════ */
+.hero {
+  background:
+    linear-gradient(135deg, rgba(18,52,90,.97), rgba(31,74,120,.92)),
+    url("https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=1800&q=80");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--r-xl);
+  padding: 44px 40px 36px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  color: white;
+  animation: fadeUp .55s ease both;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: calc(var(--r-xl) - 12px);
+  pointer-events: none;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,.28);
+  box-shadow: 0 12px 36px rgba(0,0,0,.3);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hero-text .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(200,169,106,.18);
+  border: 1px solid rgba(200,169,106,.35);
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.hero-text h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 10px;
+  letter-spacing: -.02em;
+  color: white;
+}
+
+.hero-text p {
+  color: rgba(255,255,255,.68);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 580px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  margin-top: 24px;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--r-md);
+  padding: 14px 12px;
+  text-align: center;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.hero-stat:hover { background: rgba(255,255,255,.12); border-color: rgba(200,169,106,.35); }
+
+.hero-stat .label {
+  display: block;
+  color: rgba(255,255,255,.5);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 6px;
+}
+
+.hero-stat .value {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -.02em;
+}
+
+/* BOI rate banner */
+.boi-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 18px;
+  margin-top: 20px;
+  border-radius: var(--r-md);
+  background: rgba(200,169,106,.12);
+  border: 1px solid rgba(200,169,106,.28);
+  position: relative;
+  z-index: 2;
+}
+
+.boi-banner strong { display: block; font-size: 13px; color: var(--gold-light); margin-bottom: 3px; }
+.boi-banner span   { display: block; color: rgba(255,255,255,.55); font-size: 12px; line-height: 1.6; }
+
+.boi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  color: var(--navy);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 800;
+  font-size: 12.5px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(200,169,106,.3);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.boi-btn:hover { opacity: .9; transform: translateY(-1px); }
+
+/* ══════════════ TOOLBAR ══════════════ */
+.toolbar {
+  position: sticky;
+  top: 68px;
+  z-index: 50;
+  background: rgba(245,241,232,.90);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  padding: 12px;
+  margin-bottom: 20px;
+  animation: fadeUp .55s .1s ease both;
+}
+
+.toolbar-grid {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, minmax(0,.65fr));
+  gap: 8px;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.7);
+  border: 1px solid var(--line);
+  padding: 0 14px;
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.control:focus-within {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(18,52,90,.09);
+}
+
+.control span { font-size: 15px; flex: 0 0 auto; opacity: .7; }
+
+.control input,
+.control select {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-family: "Heebo", inherit;
+  min-width: 0;
+}
+
+.control input::placeholder { color: var(--muted); }
+.control select option { color: #1a1a1a; background: #fff; }
+
+/* ══════════════ LAYOUT ══════════════ */
+.layout {
+  display: grid;
+  grid-template-columns: 390px 1fr;
+  gap: 18px;
+  align-items: start;
+  animation: fadeUp .55s .18s ease both;
+}
+
+/* ══════════════ PANELS ══════════════ */
+.panel {
+  background: rgba(255,250,241,.90);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(200,169,106,.18);
+  border-radius: calc(var(--r-xl) - 10px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line2);
+  position: relative;
+  z-index: 1;
+}
+
+.panel-head-left { display: flex; align-items: center; gap: 12px; }
+
+.panel-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 8px 20px rgba(18,52,90,.18);
+  flex-shrink: 0;
+}
+
+.panel-head h2 { margin: 0; font-size: 17px; font-weight: 700; color: var(--navy); }
+.panel-head small { color: var(--muted); font-size: 12px; }
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ══════════════ CARDS ══════════════ */
+.cards {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  max-height: 1000px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(18,52,90,.15) transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.cards::-webkit-scrollbar { width: 4px; }
+.cards::-webkit-scrollbar-track { background: transparent; }
+.cards::-webkit-scrollbar-thumb { background: rgba(18,52,90,.15); border-radius: 2px; }
+
+.card {
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: rgba(255,255,255,.80);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(18,52,90,.28);
+  box-shadow: 0 14px 36px rgba(18,52,90,.12);
+}
+
+.card.active {
+  border-color: var(--gold);
+  background: rgba(200,169,106,.06);
+  box-shadow: 0 14px 36px rgba(18,52,90,.12), 0 0 0 1px rgba(200,169,106,.3);
+}
+
+.media {
+  position: relative;
+  height: 155px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+
+.card:hover .media img { transform: scale(1.05); }
+
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(18,52,90,.70) 100%);
+}
+
+.flag-bubble {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(245,241,232,.82);
+  border: 1px solid rgba(255,255,255,.5);
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  z-index: 1;
+  backdrop-filter: blur(6px);
+}
+
+.card-badge {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 1;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(18,52,90,.75);
+  border: 1px solid rgba(255,255,255,.18);
+  font-size: 11px;
+  color: white;
+  backdrop-filter: blur(8px);
+}
+
+.card-caption {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  z-index: 1;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  text-shadow: 0 2px 14px rgba(0,0,0,.7);
+  color: white;
+  max-width: 75%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-body { padding: 12px 14px; }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.card-top h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--navy); }
+.card-top small { display: block; color: var(--muted); margin-top: 2px; font-size: 12px; }
+
+.amount-pill {
+  display: inline-flex;
+  align-items: center;
+  min-width: 64px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid rgba(45,125,90,.22);
+  font-weight: 800;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.card-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.card-meta span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(18,52,90,.06);
+  border: 1px solid var(--line2);
+  font-size: 11.5px;
+  color: var(--ink);
+}
+
+/* ══════════════ TABLE ══════════════ */
+.summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 22px 4px;
+  color: var(--muted);
+  font-size: 12.5px;
+  position: relative;
+  z-index: 1;
+}
+
+.table-wrap {
+  padding: 12px;
+  overflow: auto;
+  max-height: 860px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(18,52,90,.12) transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.table-wrap::-webkit-scrollbar { width: 4px; height: 4px; }
+.table-wrap::-webkit-scrollbar-thumb { background: rgba(18,52,90,.14); border-radius: 2px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgba(245,241,232,.97);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 13px 14px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line2);
+  font-size: 14px;
+  color: var(--ink);
+  transition: background var(--transition);
+}
+
+tbody tr:hover td { background: rgba(18,52,90,.03); }
+tbody tr:last-child td { border-bottom: none; }
+
+.country-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.flag-chip {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(18,52,90,.06);
+  border: 1px solid var(--line2);
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+
+.amount-cell {
+  color: var(--green);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.usd-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(18,52,90,.06);
+  border: 1px solid var(--line2);
+  color: var(--blue);
+  font-weight: 800;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.usd-cell small { font-weight: 600; color: var(--muted); font-size: 10.5px; }
+.usd-missing { color: var(--muted); font-size: 12px; }
+
+.currency-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+}
+
+.currency-symbol {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: rgba(18,52,90,.07);
+  border: 1px solid var(--line2);
+  color: var(--navy);
+  font-size: 12px;
+}
+
+/* ══════════════ NO RESULTS ══════════════ */
+.no-results {
+  display: none;
+  padding: 52px 20px;
+  text-align: center;
+  color: var(--muted);
+  position: relative;
+  z-index: 1;
+}
+
+.no-results .no-icon { font-size: 40px; margin-bottom: 12px; }
+.no-results strong { display: block; font-size: 19px; color: var(--navy); margin-bottom: 8px; font-weight: 700; }
+
+/* ══════════════ MOBILE LIST ══════════════ */
+.mobile-list { display: none; padding: 10px; gap: 10px; flex-direction: column; }
+
+.mobile-row {
+  background: rgba(255,255,255,.75);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 14px;
+}
+
+.mobile-row-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.mobile-row h4 { margin: 0; font-size: 15px; font-weight: 700; color: var(--navy); }
+.mobile-row small { color: var(--muted); display: block; margin-top: 2px; font-size: 12px; }
+
+.mobile-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+.mobile-tags span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(18,52,90,.06);
+  border: 1px solid var(--line2);
+  font-size: 12px;
+  color: var(--ink);
+}
+
+/* ══════════════ FOOTER ══════════════ */
+.footer-note {
+  border-top: 1px solid var(--line);
+  background: rgba(235,226,210,.65);
+  text-align: center;
+  padding: 20px 24px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  margin-top: 28px;
+}
+
+/* ══════════════ ANIMATIONS ══════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════ RESPONSIVE ══════════════ */
+@media (max-width: 1200px) {
+  .layout { grid-template-columns: 1fr; }
+  .cards  { grid-template-columns: repeat(2, minmax(0,1fr)); max-height: none; }
+}
+
+@media (max-width: 900px) {
+  .hero-stats      { grid-template-columns: repeat(2,1fr); }
+  .toolbar-grid    { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 680px) {
+  .wrap          { width: calc(100% - 16px); padding-top: 10px; }
+  .hero          { padding: 24px 18px 20px; border-radius: var(--r-lg); }
+  .hero-inner    { grid-template-columns: 1fr; gap: 16px; }
+  .hero-logo-circle { width: 80px; height: 80px; }
+  .hero-stats    { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .hero-stat .value { font-size: 20px; }
+  .toolbar       { top: 68px; border-radius: var(--r-lg); padding: 9px; }
+  .toolbar-grid  { grid-template-columns: 1fr; gap: 7px; }
+  .control       { min-height: 48px; }
+  .panel         { border-radius: var(--r-lg); }
+  .cards         { grid-template-columns: 1fr; }
+  .summary-bar   { flex-direction: column; align-items: flex-start; }
+  .desktop-table { display: none; }
+  .mobile-list   { display: flex; }
+  .cards-panel   { display: none; }
+  .boi-banner    { flex-direction: column; align-items: flex-start; }
+  .hero-text p   { font-size: 13px; }
+}
+</style>
 </head>
-
 <body>
 
-  <section id="login" class="login">
-    <div class="login-card">
-
-      <div class="logo-circle">
-        <img src="logo.png" alt="Hub Logo">
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="mini-brand" href="../index.html">
+      <div class="mini-logo-circle">
+        <img src="../logo.png" alt="Hub">
       </div>
-
-      <div class="brand-title">Hub</div>
-      <div class="gold-line"></div>
-      <div class="login-subtitle">חטיבת משרדי ממשלה</div>
-
-      <p class="login-desc">
-        מערכת ניהול ידע להסכמי תעופה, פקודות אמדאוס, קצובות מלון ומידע תפעולי.
-      </p>
-
-      <div class="login-fields">
-        <input class="field" id="emailField" type="email" placeholder="אימייל">
-        <input class="field" id="passField" type="password" placeholder="סיסמה">
-        <div class="error-msg" id="errorMsg">אימייל או סיסמה שגויים. נסה שנית.</div>
-        <button class="btn btn-primary" onclick="enterApp()">כניסה למערכת ✈</button>
-      </div>
-
-      <div class="login-footer">Internal Knowledge System · Government Division</div>
+      <span>Hub</span>
+    </a>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div class="topbar-pill">חטיבת משרדי ממשלה</div>
     </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo-circle">
+      <img src="../logo.png" alt="Hub Logo">
+    </div>
+
+    <div class="hero-text">
+      <div class="eyebrow">✦ HOTELS · GOVERNMENT DIVISION</div>
+      <h1>קצובות לינה<br>ברחבי העולם</h1>
+      <p>טבלת קצובות לינה מלאה עם חיפוש מהיר, סינון לפי מדינה ומטבע, והמרה משוערת לדולר לכל יעד שאינו נקוב בדולר — לפי שערי בנק ישראל.</p>
+    </div>
+
+    <div></div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="label">סה״כ יעדים</span><span class="value" id="totalDestinations">—</span></div>
+    <div class="hero-stat"><span class="label">מדינות</span><span class="value" id="totalCountries">—</span></div>
+    <div class="hero-stat"><span class="label">מטבעות</span><span class="value" id="totalCurrencies">—</span></div>
+    <div class="hero-stat"><span class="label">תוצאות</span><span class="value" id="visibleResults">—</span></div>
+  </div>
+
+  <div class="boi-banner">
+    <div>
+      <strong>⚡ שער דולר יציג – בנק ישראל</strong>
+      <span>לפי עדכון 29/04/2026: 2.9610 ₪ לדולר. במטבעות שאינם דולר מוצגת גם המרה מחושבת לדולר.</span>
+    </div>
+    <a class="boi-btn" href="https://www.boi.org.il/roles/markets/exchangerates/usdollar/" target="_blank" rel="noopener">
+      פתיחת שער הדולר ↗
+    </a>
+  </div>
+</section>
+
+<!-- ══ TOOLBAR ══ -->
+<section class="toolbar">
+  <div class="toolbar-grid">
+    <label class="control">
+      <span>🔎</span>
+      <input type="text" id="searchInput" placeholder="חפש מדינה, עיר, מטבע או סכום..." autocomplete="off" />
+    </label>
+    <label class="control">
+      <span>🌍</span>
+      <select id="countryFilter"><option value="">כל המדינות</option></select>
+    </label>
+    <label class="control">
+      <span>💱</span>
+      <select id="currencyFilter"><option value="">כל המטבעות</option></select>
+    </label>
+    <label class="control">
+      <span>↕️</span>
+      <select id="sortFilter">
+        <option value="default">מיון ברירת מחדל</option>
+        <option value="amount-desc">קצובה מהגבוה לנמוך</option>
+        <option value="amount-asc">קצובה מהנמוך לגבוה</option>
+        <option value="country-asc">מדינה א׳-ת׳</option>
+        <option value="city-asc">עיר א׳-ת׳</option>
+      </select>
+    </label>
+    <label class="control">
+      <span>🖼️</span>
+      <select id="cardLimit">
+        <option value="18">18 כרטיסים</option>
+        <option value="30">30 כרטיסים</option>
+        <option value="50">50 כרטיסים</option>
+      </select>
+    </label>
+  </div>
+</section>
+
+<!-- ══ LAYOUT ══ -->
+<section class="layout">
+
+  <!-- Cards panel -->
+  <aside class="panel cards-panel">
+    <div class="panel-head">
+      <div class="panel-head-left">
+        <div class="panel-icon">🌍</div>
+        <div><h2>יעדים מודגשים</h2><small>כרטיסים עם תמונות</small></div>
+      </div>
+      <span class="count-badge" id="cardCount">0</span>
+    </div>
+    <div class="cards" id="cardsContainer"></div>
+  </aside>
+
+  <!-- Table panel -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-head-left">
+        <div class="panel-icon">💼</div>
+        <div><h2>קצובות לינה</h2><small>כל היעדים</small></div>
+      </div>
+      <span class="count-badge" id="statsText">טוען...</span>
+    </div>
+
+    <div class="summary-bar">
+      <div id="summaryText">המערכת מציגה את כל היעדים כרגע</div>
+      <div id="selectedText" style="color:var(--muted)">לא נבחר יעד ספציפי</div>
+    </div>
+
+    <!-- Desktop table -->
+    <div class="table-wrap desktop-table">
+      <table>
+        <thead>
+          <tr>
+            <th>מדינה</th>
+            <th>עיר / אזור</th>
+            <th>מטבע</th>
+            <th>קצובת לינה</th>
+            <th>שווי בדולר</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="no-results" id="noResults">
+        <div class="no-icon">🔍</div>
+        <strong>לא נמצאו תוצאות</strong>
+        נסה לשנות את החיפוש או לבחור מסננים אחרים.
+      </div>
+    </div>
+
+    <!-- Mobile list -->
+    <div class="mobile-list" id="mobileList"></div>
   </section>
+</section>
 
-  <section id="app" class="hidden">
+<footer class="footer-note">
+  Hub · חטיבת משרדי ממשלה · קצובות לינה · שווי משוער בדולר לפי שערים יציגים של בנק ישראל · עדכון 04/2026
+</footer>
 
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="mini-brand">
-          <div class="mini-logo-circle">
-            <img src="logo.png" alt="Hub">
-          </div>
-          <span>Hub</span>
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════ DATA ═══════════════ */
+const data = [{"country":"Albania","city":"כל המדינה","currency":"EUR","amount":"150"},{"country":"Angola","city":"כל המדינה","currency":"USD","amount":"325"},{"country":"Antigua and Barbuda","city":"כל המדינה","currency":"USD","amount":"445"},{"country":"Argentina","city":"כל המדינה","currency":"USD","amount":"205"},{"country":"Armenia","city":"כל המדינה","currency":"USD","amount":"135"},{"country":"Australia","city":"Sydney","currency":"AUD","amount":"345"},{"country":"Australia","city":"יתר המדינה","currency":"AUD","amount":"250"},{"country":"Austria","city":"כל המדינה","currency":"EUR","amount":"180"},{"country":"Azerbaijan","city":"כל המדינה","currency":"USD","amount":"145"},{"country":"Bahamas","city":"כל המדינה","currency":"USD","amount":"415"},{"country":"Bahrain","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Barbados","city":"כל המדינה","currency":"USD","amount":"365"},{"country":"Belarus","city":"כל המדינה","currency":"USD","amount":"140"},{"country":"Belgium","city":"כל המדינה","currency":"EUR","amount":"235"},{"country":"Belize","city":"כל המדינה","currency":"USD","amount":"195"},{"country":"Benin","city":"כל המדינה","currency":"USD","amount":"170"},{"country":"Bolivia","city":"כל המדינה","currency":"USD","amount":"125"},{"country":"Bosnia","city":"כל המדינה","currency":"USD","amount":"105"},{"country":"Botswana","city":"כל המדינה","currency":"USD","amount":"135"},{"country":"Brazil","city":"כל המדינה","currency":"USD","amount":"135"},{"country":"Brunei","city":"כל המדינה","currency":"USD","amount":"140"},{"country":"Bulgaria","city":"כל המדינה","currency":"EUR","amount":"140"},{"country":"Burkina Faso","city":"כל המדינה","currency":"USD","amount":"155"},{"country":"Burundi","city":"כל המדינה","currency":"USD","amount":"145"},{"country":"Cambodia","city":"כל המדינה","currency":"USD","amount":"120"},{"country":"Cameroon","city":"כל המדינה","currency":"USD","amount":"200"},{"country":"Canada","city":"כל המדינה","currency":"CAD","amount":"340"},{"country":"Central African Republic","city":"כל המדינה","currency":"USD","amount":"125"},{"country":"Chad","city":"כל המדינה","currency":"USD","amount":"230"},{"country":"Chile","city":"כל המדינה","currency":"USD","amount":"185"},{"country":"China","city":"כל המדינה","currency":"CNY","amount":"1065"},{"country":"Colombia","city":"כל המדינה","currency":"USD","amount":"185"},{"country":"Congo","city":"כל המדינה","currency":"USD","amount":"240"},{"country":"Cook Islands","city":"כל המדינה","currency":"NZD","amount":"495"},{"country":"Costa Rica","city":"כל המדינה","currency":"USD","amount":"195"},{"country":"Cote d'Ivoire","city":"כל המדינה","currency":"EUR","amount":"185"},{"country":"Croatia","city":"כל המדינה","currency":"EUR","amount":"120"},{"country":"Cuba","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Cyprus","city":"כל המדינה","currency":"EUR","amount":"165"},{"country":"Czech Republic","city":"כל המדינה","currency":"EUR","amount":"140"},{"country":"Democratic Republic of the Congo","city":"כל המדינה","currency":"USD","amount":"225"},{"country":"Denmark","city":"כל המדינה","currency":"DKK","amount":"1690"},{"country":"Djibouti","city":"כל המדינה","currency":"USD","amount":"230"},{"country":"Dominican Republic","city":"כל המדינה","currency":"USD","amount":"205"},{"country":"East Timor","city":"כל המדינה","currency":"USD","amount":"140"},{"country":"Ecuador","city":"כל המדינה","currency":"USD","amount":"220"},{"country":"Egypt","city":"כל המדינה","currency":"USD","amount":"190"},{"country":"El Salvador","city":"כל המדינה","currency":"USD","amount":"185"},{"country":"Equatorial Guinea","city":"כל המדינה","currency":"USD","amount":"195"},{"country":"Eritrea","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Estonia","city":"כל המדינה","currency":"EUR","amount":"140"},{"country":"Ethiopia","city":"כל המדינה","currency":"USD","amount":"140"},{"country":"Fiji","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Finland","city":"כל המדינה","currency":"EUR","amount":"175"},{"country":"France","city":"Paris","currency":"EUR","amount":"320"},{"country":"France","city":"יתר המדינה","currency":"EUR","amount":"220"},{"country":"Gabon","city":"כל המדינה","currency":"USD","amount":"225"},{"country":"Georgia","city":"כל המדינה","currency":"USD","amount":"175"},{"country":"Germany","city":"כל המדינה","currency":"EUR","amount":"180"},{"country":"Ghana","city":"כל המדינה","currency":"USD","amount":"225"},{"country":"Greece","city":"כל המדינה","currency":"EUR","amount":"180"},{"country":"Guatemala","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Guinea","city":"כל המדינה","currency":"EUR","amount":"160"},{"country":"Guyana","city":"כל המדינה","currency":"USD","amount":"170"},{"country":"Haiti","city":"כל המדינה","currency":"USD","amount":"185"},{"country":"Honduras","city":"כל המדינה","currency":"USD","amount":"185"},{"country":"Hong Kong","city":"כל המדינה","currency":"HKD","amount":"1815"},{"country":"Hungary","city":"כל המדינה","currency":"EUR","amount":"150"},{"country":"Iceland","city":"כל המדינה","currency":"USD","amount":"280"},{"country":"India","city":"כל המדינה","currency":"USD","amount":"190"},{"country":"Indonesia","city":"כל המדינה","currency":"USD","amount":"125"},{"country":"Irish Republic","city":"כל המדינה","currency":"EUR","amount":"230"},{"country":"Italy","city":"כל המדינה","currency":"EUR","amount":"295"},{"country":"Jamaica","city":"כל המדינה","currency":"USD","amount":"280"},{"country":"Japan","city":"Tokyo","currency":"JPY","amount":"37120"},{"country":"Japan","city":"יתר המדינה","currency":"JPY","amount":"21025"},{"country":"Jordan","city":"כל המדינה","currency":"JOD","amount":"90"},{"country":"Kazakhstan","city":"כל המדינה","currency":"USD","amount":"130"},{"country":"Kenya","city":"כל המדינה","currency":"USD","amount":"210"},{"country":"Korea Republic","city":"כל המדינה","currency":"USD","amount":"180"},{"country":"Kosovo","city":"כל המדינה","currency":"EUR","amount":"95"},{"country":"Kyrgyzstan","city":"כל המדינה","currency":"USD","amount":"130"},{"country":"Laos","city":"כל המדינה","currency":"USD","amount":"120"},{"country":"Latvia","city":"כל המדינה","currency":"EUR","amount":"95"},{"country":"Lesotho","city":"כל המדינה","currency":"USD","amount":"110"},{"country":"Liberia","city":"כל המדינה","currency":"USD","amount":"225"},{"country":"Lithuania","city":"כל המדינה","currency":"EUR","amount":"105"},{"country":"Luxembourg","city":"כל המדינה","currency":"EUR","amount":"235"},{"country":"Macau","city":"כל המדינה","currency":"USD","amount":"190"},{"country":"Macedonia","city":"כל המדינה","currency":"EUR","amount":"95"},{"country":"Madagascar","city":"כל המדינה","currency":"EUR","amount":"120"},{"country":"Malawi","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Malaysia","city":"כל המדינה","currency":"USD","amount":"110"},{"country":"Maldives","city":"כל המדינה","currency":"USD","amount":"300"},{"country":"Mali","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Malta","city":"כל המדינה","currency":"EUR","amount":"140"},{"country":"Mauritania","city":"כל המדינה","currency":"EUR","amount":"135"},{"country":"Mauritius","city":"כל המדינה","currency":"USD","amount":"315"},{"country":"Mexico","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Moldova","city":"כל המדינה","currency":"EUR","amount":"150"},{"country":"Monaco","city":"כל המדינה","currency":"EUR","amount":"325"},{"country":"Mongolia","city":"כל המדינה","currency":"USD","amount":"135"},{"country":"Montenegro","city":"כל המדינה","currency":"EUR","amount":"90"},{"country":"Morocco","city":"כל המדינה","currency":"USD","amount":"180"},{"country":"Mozambique","city":"כל המדינה","currency":"USD","amount":"170"},{"country":"Myanmar","city":"כל המדינה","currency":"USD","amount":"100"},{"country":"Namibia","city":"כל המדינה","currency":"USD","amount":"140"},{"country":"Nepal","city":"כל המדינה","currency":"USD","amount":"180"},{"country":"Netherlands","city":"Amsterdam","currency":"EUR","amount":"260"},{"country":"Netherlands","city":"יתר המדינה","currency":"EUR","amount":"155"},{"country":"New Zealand","city":"Niue","currency":"USD","amount":"445"},{"country":"New Zealand","city":"יתר המדינה","currency":"NZD","amount":"280"},{"country":"Nicaragua","city":"כל המדינה","currency":"USD","amount":"155"},{"country":"Niger","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Nigeria","city":"כל המדינה","currency":"USD","amount":"205"},{"country":"Norway","city":"כל המדינה","currency":"NOK","amount":"1815"},{"country":"Oman","city":"כל המדינה","currency":"USD","amount":"245"},{"country":"Panama","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Papua New Guinea","city":"כל המדינה","currency":"USD","amount":"175"},{"country":"Paraguay","city":"כל המדינה","currency":"USD","amount":"120"},{"country":"Peru","city":"כל המדינה","currency":"USD","amount":"170"},{"country":"Philippines","city":"כל המדינה","currency":"USD","amount":"155"},{"country":"Poland","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Portugal","city":"כל המדינה","currency":"EUR","amount":"165"},{"country":"Puerto Rico","city":"כל המדינה","currency":"USD","amount":"355"},{"country":"Qatar","city":"כל המדינה","currency":"USD","amount":"155"},{"country":"Romania","city":"כל המדינה","currency":"EUR","amount":"130"},{"country":"Russia","city":"Moscow","currency":"RUB","amount":"17500"},{"country":"Russia","city":"יתר המדינה","currency":"RUB","amount":"15300"},{"country":"Rwanda","city":"כל המדינה","currency":"USD","amount":"155"},{"country":"Samoa","city":"כל המדינה","currency":"USD","amount":"250"},{"country":"Saudi Arabia","city":"כל המדינה","currency":"SAR","amount":"735"},{"country":"Senegal","city":"כל המדינה","currency":"USD","amount":"210"},{"country":"Serbia","city":"כל המדינה","currency":"EUR","amount":"125"},{"country":"Seychelles","city":"כל המדינה","currency":"EUR","amount":"250"},{"country":"Sierra Leone","city":"כל המדינה","currency":"USD","amount":"180"},{"country":"Singapore","city":"כל המדינה","currency":"SGD","amount":"410"},{"country":"Slovakia","city":"כל המדינה","currency":"EUR","amount":"130"},{"country":"Slovenia","city":"כל המדינה","currency":"EUR","amount":"135"},{"country":"South Africa","city":"כל המדינה","currency":"USD","amount":"120"},{"country":"Spain","city":"כל המדינה","currency":"EUR","amount":"270"},{"country":"Sri Lanka","city":"כל המדינה","currency":"USD","amount":"180"},{"country":"Sudan","city":"כל המדינה","currency":"USD","amount":"215"},{"country":"Surinam","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Sweden","city":"כל המדינה","currency":"SEK","amount":"1935"},{"country":"Switzerland","city":"Geneva","currency":"CHF","amount":"300"},{"country":"Switzerland","city":"Zurich","currency":"CHF","amount":"320"},{"country":"Switzerland","city":"יתר המדינה","currency":"CHF","amount":"220"},{"country":"Taiwan","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Tajikistan","city":"כל המדינה","currency":"USD","amount":"140"},{"country":"Tanzania","city":"כל המדינה","currency":"USD","amount":"165"},{"country":"Thailand","city":"כל המדינה","currency":"USD","amount":"130"},{"country":"Togo","city":"כל המדינה","currency":"EUR","amount":"125"},{"country":"Tonga","city":"כל המדינה","currency":"USD","amount":"160"},{"country":"Trinidad and Tobago","city":"כל המדינה","currency":"USD","amount":"230"},{"country":"Tunisia","city":"כל המדינה","currency":"EUR","amount":"115"},{"country":"Turkey","city":"כל המדינה","currency":"EUR","amount":"150"},{"country":"Turkmenistan","city":"כל המדינה","currency":"USD","amount":"180"},{"country":"Uganda","city":"כל המדינה","currency":"USD","amount":"215"},{"country":"Ukraine","city":"כל המדינה","currency":"USD","amount":"130"},{"country":"United Arab Emirates","city":"כל המדינה","currency":"USD","amount":"235"},{"country":"United Kingdom","city":"Central London","currency":"GBP","amount":"270"},{"country":"United Kingdom","city":"יתר המדינה","currency":"GBP","amount":"145"},{"country":"United States of America","city":"Atlanta GA","currency":"USD","amount":"255"},{"country":"United States of America","city":"Boston MA","currency":"USD","amount":"300"},{"country":"United States of America","city":"Chicago IL","currency":"USD","amount":"270"},{"country":"United States of America","city":"Houston TX","currency":"USD","amount":"275"},{"country":"United States of America","city":"Los Angeles CA","currency":"USD","amount":"290"},{"country":"United States of America","city":"Miami FL","currency":"USD","amount":"255"},{"country":"United States of America","city":"New York NY","currency":"USD","amount":"520"},{"country":"United States of America","city":"San Francisco CA","currency":"USD","amount":"295"},{"country":"United States of America","city":"Washington DC","currency":"USD","amount":"415"},{"country":"United States of America","city":"יתר המדינה","currency":"USD","amount":"255"},{"country":"Uruguay","city":"Montevideo","currency":"USD","amount":"180"},{"country":"Uzbekistan","city":"Tashkent","currency":"USD","amount":"150"},{"country":"Venezuela","city":"Caracas","currency":"USD","amount":"160"},{"country":"Vietnam","city":"Hanoi","currency":"USD","amount":"150"},{"country":"Zambia","city":"Lusaka","currency":"USD","amount":"205"},{"country":"Zimbabwe","city":"Harare","currency":"USD","amount":"180"}];
+
+const flagMap = {"Albania":"🇦🇱","Angola":"🇦🇴","Antigua and Barbuda":"🇦🇬","Argentina":"🇦🇷","Armenia":"🇦🇲","Australia":"🇦🇺","Austria":"🇦🇹","Azerbaijan":"🇦🇿","Bahamas":"🇧🇸","Bahrain":"🇧🇭","Barbados":"🇧🇧","Belarus":"🇧🇾","Belgium":"🇧🇪","Belize":"🇧🇿","Benin":"🇧🇯","Bolivia":"🇧🇴","Bosnia":"🇧🇦","Botswana":"🇧🇼","Brazil":"🇧🇷","Brunei":"🇧🇳","Bulgaria":"🇧🇬","Burkina Faso":"🇧🇫","Burundi":"🇧🇮","Cambodia":"🇰🇭","Cameroon":"🇨🇲","Canada":"🇨🇦","Central African Republic":"🇨🇫","Chad":"🇹🇩","Chile":"🇨🇱","China":"🇨🇳","Colombia":"🇨🇴","Congo":"🇨🇬","Cook Islands":"🇨🇰","Costa Rica":"🇨🇷","Cote d'Ivoire":"🇨🇮","Croatia":"🇭🇷","Cuba":"🇨🇺","Cyprus":"🇨🇾","Czech Republic":"🇨🇿","Democratic Republic of the Congo":"🇨🇩","Denmark":"🇩🇰","Djibouti":"🇩🇯","Dominican Republic":"🇩🇴","East Timor":"🇹🇱","Ecuador":"🇪🇨","Egypt":"🇪🇬","El Salvador":"🇸🇻","Equatorial Guinea":"🇬🇶","Eritrea":"🇪🇷","Estonia":"🇪🇪","Ethiopia":"🇪🇹","Fiji":"🇫🇯","Finland":"🇫🇮","France":"🇫🇷","Gabon":"🇬🇦","Georgia":"🇬🇪","Germany":"🇩🇪","Ghana":"🇬🇭","Greece":"🇬🇷","Guatemala":"🇬🇹","Guinea":"🇬🇳","Guyana":"🇬🇾","Haiti":"🇭🇹","Honduras":"🇭🇳","Hong Kong":"🇭🇰","Hungary":"🇭🇺","Iceland":"🇮🇸","India":"🇮🇳","Indonesia":"🇮🇩","Irish Republic":"🇮🇪","Italy":"🇮🇹","Jamaica":"🇯🇲","Japan":"🇯🇵","Jordan":"🇯🇴","Kazakhstan":"🇰🇿","Kenya":"🇰🇪","Korea Republic":"🇰🇷","Kosovo":"🇽🇰","Kyrgyzstan":"🇰🇬","Laos":"🇱🇦","Latvia":"🇱🇻","Lesotho":"🇱🇸","Liberia":"🇱🇷","Lithuania":"🇱🇹","Luxembourg":"🇱🇺","Macau":"🇲🇴","Macedonia":"🇲🇰","Madagascar":"🇲🇬","Malawi":"🇲🇼","Malaysia":"🇲🇾","Maldives":"🇲🇻","Mali":"🇲🇱","Malta":"🇲🇹","Mauritania":"🇲🇷","Mauritius":"🇲🇺","Mexico":"🇲🇽","Moldova":"🇲🇩","Monaco":"🇲🇨","Mongolia":"🇲🇳","Montenegro":"🇲🇪","Morocco":"🇲🇦","Mozambique":"🇲🇿","Myanmar":"🇲🇲","Namibia":"🇳🇦","Nepal":"🇳🇵","Netherlands":"🇳🇱","New Zealand":"🇳🇿","Nicaragua":"🇳🇮","Niger":"🇳🇪","Nigeria":"🇳🇬","Norway":"🇳🇴","Oman":"🇴🇲","Panama":"🇵🇦","Papua New Guinea":"🇵🇬","Paraguay":"🇵🇾","Peru":"🇵🇪","Philippines":"🇵🇭","Poland":"🇵🇱","Portugal":"🇵🇹","Puerto Rico":"🇵🇷","Qatar":"🇶🇦","Romania":"🇷🇴","Russia":"🇷🇺","Rwanda":"🇷🇼","Samoa":"🇼🇸","Saudi Arabia":"🇸🇦","Senegal":"🇸🇳","Serbia":"🇷🇸","Seychelles":"🇸🇨","Sierra Leone":"🇸🇱","Singapore":"🇸🇬","Slovakia":"🇸🇰","Slovenia":"🇸🇮","South Africa":"🇿🇦","Spain":"🇪🇸","Sri Lanka":"🇱🇰","Sudan":"🇸🇩","Surinam":"🇸🇷","Sweden":"🇸🇪","Switzerland":"🇨🇭","Taiwan":"🇹🇼","Tajikistan":"🇹🇯","Tanzania":"🇹🇿","Thailand":"🇹🇭","Togo":"🇹🇬","Tonga":"🇹🇴","Trinidad and Tobago":"🇹🇹","Tunisia":"🇹🇳","Turkey":"🇹🇷","Turkmenistan":"🇹🇲","Uganda":"🇺🇬","Ukraine":"🇺🇦","United Arab Emirates":"🇦🇪","United Kingdom":"🇬🇧","United States of America":"🇺🇸","Uruguay":"🇺🇾","Uzbekistan":"🇺🇿","Venezuela":"🇻🇪","Vietnam":"🇻🇳","Zambia":"🇿🇲","Zimbabwe":"🇿🇼"};
+
+/* ═══ CONSTANTS ═══ */
+const USD_ILS_RATE = 2.9610;
+const boiIlsPerUnit = {
+  "USD":2.9610,"EUR":3.4651,"GBP":3.9992,"JPY":1.8521/100,
+  "AUD":2.1192,"CAD":2.1642,"DKK":0.4636,"NOK":0.3189,"SEK":0.3196,
+  "CHF":3.7509,"JOD":4.1757,"CNY":0.4060,"HKD":0.3815,
+  "NZD":1.7800,"RUB":0.0365,"SAR":0.7896,"SGD":2.2800
+};
+
+const currencySymbols = {
+  "USD":"$","EUR":"€","GBP":"£","ILS":"₪","AUD":"A$","CAD":"C$",
+  "CHF":"CHF","JPY":"¥","CNY":"¥","HKD":"HK$","NZD":"NZ$",
+  "DKK":"kr","NOK":"kr","SEK":"kr","RUB":"₽","SAR":"﷼","JOD":"JD","SGD":"S$"
+};
+
+/* ═══ HELPERS ═══ */
+const normalizeAmount  = v => Number(String(v).replace(/,/g,""));
+const getCurrencySymbol= c => currencySymbols[c] || c;
+const getFlag          = c => flagMap[c] || "🌍";
+const getCountryList   = () => [...new Set(data.map(d => d.country))].sort((a,b) => a.localeCompare(b));
+const getCurrencyList  = () => [...new Set(data.map(d => d.currency))].sort();
+
+function currencyDisplay(currency) {
+  return `<span class="currency-mark"><span class="currency-symbol">${getCurrencySymbol(currency)}</span><span>${currency}</span></span>`;
+}
+
+function usdEquivalent(item) {
+  if (item.currency === "USD") return normalizeAmount(item.amount);
+  const rate = boiIlsPerUnit[item.currency];
+  if (!rate) return null;
+  return normalizeAmount(item.amount) * rate / USD_ILS_RATE;
+}
+
+function usdEquivalentHtml(item) {
+  if (item.currency === "USD") return `<span class="usd-missing">—</span>`;
+  const value = usdEquivalent(item);
+  if (value === null) return `<span class="usd-missing">אין שער זמין</span>`;
+  return `<span class="usd-cell">≈ $${Math.round(value).toLocaleString("en-US")} <small>USD</small></span>`;
+}
+
+function usdEquivalentSearchValue(item) {
+  const v = usdEquivalent(item);
+  return v === null ? "" : String(Math.round(v));
+}
+
+function getImageUrl(item) {
+  const loc = (item.city === "כל המדינה" || item.city === "יתר המדינה")
+    ? item.country : `${item.city} ${item.country}`;
+  return `https://source.unsplash.com/800x500/?${encodeURIComponent(loc + " travel skyline")}`;
+}
+
+/* ═══ DOM ═══ */
+const $ = id => document.getElementById(id);
+const tableBody     = $("tableBody");
+const mobileList    = $("mobileList");
+const cardsContainer= $("cardsContainer");
+const statsText     = $("statsText");
+const summaryText   = $("summaryText");
+const selectedText  = $("selectedText");
+const cardCount     = $("cardCount");
+const noResults     = $("noResults");
+const searchInput   = $("searchInput");
+const countryFilter = $("countryFilter");
+const currencyFilter= $("currencyFilter");
+const sortFilter    = $("sortFilter");
+const cardLimit     = $("cardLimit");
+
+let selectedKey   = "";
+let debounceTimer = null;
+
+/* ═══ POPULATE FILTERS ═══ */
+function populateFilters() {
+  getCountryList().forEach(country => {
+    const o = document.createElement("option");
+    o.value = country;
+    o.textContent = `${getFlag(country)} ${country}`;
+    countryFilter.appendChild(o);
+  });
+  getCurrencyList().forEach(currency => {
+    const o = document.createElement("option");
+    o.value = currency;
+    o.textContent = currency;
+    currencyFilter.appendChild(o);
+  });
+}
+
+function updateHeroStats() {
+  $("totalDestinations").textContent = data.length;
+  $("totalCountries").textContent    = getCountryList().length;
+  $("totalCurrencies").textContent   = getCurrencyList().length;
+}
+
+/* ═══ FILTER & SORT ═══ */
+function getBaseFilteredRows() {
+  const value    = searchInput.value.trim().toLowerCase();
+  const country  = countryFilter.value;
+  const currency = currencyFilter.value;
+  const sort     = sortFilter.value;
+
+  let filtered = data.filter(item => {
+    const matchSearch =
+      item.country.toLowerCase().includes(value) ||
+      item.city.toLowerCase().includes(value)    ||
+      item.currency.toLowerCase().includes(value)||
+      String(item.amount).includes(value)        ||
+      usdEquivalentSearchValue(item).includes(value);
+    return matchSearch
+      && (!country  || item.country  === country)
+      && (!currency || item.currency === currency);
+  });
+
+  if      (sort === "amount-desc") filtered.sort((a,b) => normalizeAmount(b.amount) - normalizeAmount(a.amount));
+  else if (sort === "amount-asc")  filtered.sort((a,b) => normalizeAmount(a.amount) - normalizeAmount(b.amount));
+  else if (sort === "country-asc") filtered.sort((a,b) => a.country.localeCompare(b.country));
+  else if (sort === "city-asc")    filtered.sort((a,b) => a.city.localeCompare(b.city));
+
+  return filtered;
+}
+
+/* ═══ RENDER CARDS ═══ */
+function renderCards(rows) {
+  cardsContainer.innerHTML = "";
+  const limit = Number(cardLimit.value || 18);
+  const slice = rows.slice(0, limit);
+  cardCount.textContent = `${rows.length} יעדים`;
+
+  slice.forEach(item => {
+    const key  = `${item.country}__${item.city}`;
+    const card = document.createElement("article");
+    card.className = `card ${selectedKey === key ? "active" : ""}`;
+    card.innerHTML = `
+      <div class="media">
+        <img src="${getImageUrl(item)}" alt="${item.city}, ${item.country}" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80';" />
+        <div class="flag-bubble">${getFlag(item.country)}</div>
+        <div class="card-badge">${getCurrencySymbol(item.currency)} ${item.amount} · ${item.currency}</div>
+        <div class="card-caption">${item.city}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div><h3>${item.city}</h3><small>${item.country}</small></div>
+          <span class="amount-pill">${item.amount}</span>
         </div>
-
-        <div class="nav-actions">
-          <div class="pill">חטיבת משרדי ממשלה</div>
-          <button class="btn logout" onclick="logout()">יציאה</button>
+        <div class="card-meta">
+          <span>מטבע: ${getCurrencySymbol(item.currency)} ${item.currency}</span>
+          <span>${item.currency === "USD" ? "$"+item.amount : usdEquivalentHtml(item)}</span>
         </div>
       </div>
-    </header>
-
-    <section class="hero">
-      <div class="hero-card">
-        <div class="hero-logo-circle">
-          <img src="logo.png" alt="Hub Logo">
-        </div>
-
-        <div class="hero-text">
-          <div class="eyebrow">GOVERNMENT DIVISION · AVIATION KNOWLEDGE HUB</div>
-          <h1>כל הידע במקום אחד.</h1>
-        </div>
-      </div>
-    </section>
-
-    <main class="content">
-      <section class="fee-box">
-        <div class="fee-head">
-          <div class="fee-icon">💼</div>
-          <h2>דמי טיפול מאי 2026</h2>
-        </div>
-
-        <div class="fee-grid">
-          <div class="fee-item">
-            <strong>הזמנה עם טיסה</strong>
-            <span>49.73$</span>
-          </div>
-
-          <div class="fee-item">
-            <strong>הזמנה בלי טיסה</strong>
-            <span>14.21$</span>
-          </div>
-
-          <div class="fee-item">
-            <strong>שינוי לאחר כרטוס</strong>
-            <span>11.84$</span>
-          </div>
-        </div>
-
-        <div class="portals-section">
-        <div class="section-head">
-          <div class="section-icon">🔗</div>
-          <h2>מידע שימושי</h2>
-        </div>
-
-        <div class="link-buttons">
-          <a class="portal-card" href="https://avcohn.github.io/Delay/Airlines/" target="_blank">
-            <img src="1.PNG" alt="חברות תעופה">
-            <div class="portal-content">
-              <div class="portal-kicker">AIRLINES</div>
-              <div class="portal-title">חברות תעופה<br>הסכמים ממשלתיים</div>
-            </div>
-          </a>
-
-          <a class="portal-card" href="https://avcohn.github.io/Delay/Hotels" target="_blank">
-            <img src="2.jpg" alt="קצובת מלונות">
-            <div class="portal-content">
-              <div class="portal-kicker">HOTELS</div>
-              <div class="portal-title">קצובת מלונות</div>
-            </div>
-          </a>
-
-          <a class="portal-card" href="https://www.flightradar24.com/" target="_blank">
-            <img src="3.jpg" alt="FlightRadar">
-            <div class="portal-content">
-              <div class="portal-kicker">LIVE OPS</div>
-              <div class="portal-title">FlightRadar</div>
-            </div>
-          </a>
-
-          <a class="portal-card" href="https://notebooklm.google.com/notebook/b7858b97-8884-4641-b959-1b8f877bb146" target="_blank">
-            <img src="4.jpg" alt="אמדאוס">
-            <div class="portal-content">
-              <div class="portal-kicker">AMADEUS</div>
-              <div class="portal-title">אמדאוס<br>פקודות נפוצות</div>
-            </div>
-          </a>
-        </div>
-        </div><!-- /portals-section -->
-      </section>
-    </main>
-
-    <footer class="footer">
-      Hub · חטיבת משרדי ממשלה · Internal Use Only
-    </footer>
-
-  </section>
-
-  <script>
-    const CORRECT_PASSWORD = "Amsalem2026";
-
-    function enterApp(){
-      const pass = document.getElementById("passField").value;
-      const errorMsg = document.getElementById("errorMsg");
-
-      if(pass !== CORRECT_PASSWORD){
-        errorMsg.classList.add("visible");
-        document.getElementById("passField").style.borderColor = "#c0392b";
-        return;
-      }
-
-      errorMsg.classList.remove("visible");
-      document.getElementById("passField").style.borderColor = "";
-      document.getElementById("login").classList.add("hidden");
-      document.getElementById("app").classList.remove("hidden");
-      window.scrollTo(0,0);
-    }
-
-    function logout(){
-      document.getElementById("passField").value = "";
-      document.getElementById("emailField").value = "";
-      document.getElementById("app").classList.add("hidden");
-      document.getElementById("login").classList.remove("hidden");
-      window.scrollTo(0,0);
-    }
-
-    // Allow Enter key to submit
-    document.addEventListener("keydown", function(e){
-      if(e.key === "Enter" && !document.getElementById("login").classList.contains("hidden")){
-        enterApp();
-      }
+    `;
+    card.addEventListener("click", () => {
+      selectedKey = selectedKey === key ? "" : key;
+      renderAll();
     });
-  </script>
+    cardsContainer.appendChild(card);
+  });
+}
 
+/* ═══ RENDER TABLE ═══ */
+function renderTable(rows) {
+  const fragment       = document.createDocumentFragment();
+  const mobileFragment = document.createDocumentFragment();
+
+  rows.forEach(item => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><div class="country-cell"><span class="flag-chip">${getFlag(item.country)}</span><span>${item.country}</span></div></td>
+      <td>${item.city}</td>
+      <td>${currencyDisplay(item.currency)}</td>
+      <td class="amount-cell">${getCurrencySymbol(item.currency)} ${item.amount}</td>
+      <td>${usdEquivalentHtml(item)}</td>
+    `;
+    fragment.appendChild(tr);
+
+    const mRow = document.createElement("div");
+    mRow.className = "mobile-row";
+    mRow.innerHTML = `
+      <div class="mobile-row-top">
+        <div><h4>${getFlag(item.country)} ${item.city}</h4><small>${item.country}</small></div>
+        <div class="amount-pill">${getCurrencySymbol(item.currency)} ${item.amount}</div>
+      </div>
+      <div class="mobile-tags">
+        <span>מטבע: ${item.currency}</span>
+        <span>${item.currency === "USD" ? "$"+item.amount : usdEquivalentHtml(item)}</span>
+      </div>
+    `;
+    mobileFragment.appendChild(mRow);
+  });
+
+  tableBody.innerHTML = "";
+  mobileList.innerHTML = "";
+  tableBody.appendChild(fragment);
+  mobileList.appendChild(mobileFragment);
+
+  const count = rows.length;
+  statsText.textContent           = `${count} תוצאות`;
+  $("visibleResults").textContent = count;
+  summaryText.textContent         = count === data.length ? "מציג את כל היעדים" : `${count} תוצאות לאחר סינון`;
+  selectedText.textContent        = selectedKey ? `נבחר: ${selectedKey.split("__").join(" / ")}` : "לא נבחר יעד";
+  noResults.style.display         = count ? "none" : "block";
+}
+
+/* ═══ RENDER ALL ═══ */
+function renderAll() {
+  const baseRows  = getBaseFilteredRows();
+  renderCards(baseRows);
+  const tableRows = selectedKey
+    ? baseRows.filter(item => `${item.country}__${item.city}` === selectedKey)
+    : baseRows;
+  renderTable(tableRows);
+}
+
+/* ═══ EVENTS ═══ */
+[countryFilter, currencyFilter, sortFilter, cardLimit].forEach(el => {
+  el.addEventListener("change", renderAll);
+});
+searchInput.addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(renderAll, 80);
+});
+
+/* ═══ INIT ═══ */
+populateFilters();
+updateHeroStats();
+renderAll();
+</script>
 </body>
 </html>
