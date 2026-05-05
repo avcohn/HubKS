@@ -34,6 +34,7 @@
 
     .hidden{display:none!important}
 
+    /* ── LOGIN ── */
     .login{
       min-height:100vh;
       display:grid;
@@ -93,11 +94,25 @@
       to{opacity:1;transform:translateY(0)}
     }
 
-    .login-logo{
+    /* ── LOGO CIRCLE ── */
+    .logo-circle{
       width:155px;
       height:155px;
+      border-radius:50%;
+      overflow:hidden;
+      margin:0 auto 16px;
+      border:3px solid rgba(200,169,106,.45);
+      box-shadow:0 8px 28px rgba(18,52,90,.18);
+      background:transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .logo-circle img{
+      width:100%;
+      height:100%;
       object-fit:contain;
-      margin-bottom:16px;
     }
 
     .brand-title{
@@ -156,6 +171,18 @@
       box-shadow:0 0 0 4px rgba(18,52,90,.08);
     }
 
+    .error-msg{
+      color:#c0392b;
+      font-size:13px;
+      font-weight:700;
+      margin-top:4px;
+      display:none;
+    }
+
+    .error-msg.visible{
+      display:block;
+    }
+
     .btn{
       border:0;
       cursor:pointer;
@@ -191,6 +218,7 @@
       font-size:12px;
     }
 
+    /* ── TOPBAR ── */
     .topbar{
       height:72px;
       position:sticky;
@@ -220,9 +248,23 @@
       font-weight:800;
     }
 
-    .mini-brand img{
+    /* small circle in topbar */
+    .mini-logo-circle{
       width:42px;
       height:42px;
+      border-radius:50%;
+      overflow:hidden;
+      border:2px solid rgba(200,169,106,.4);
+      background:transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+
+    .mini-logo-circle img{
+      width:100%;
+      height:100%;
       object-fit:contain;
     }
 
@@ -256,6 +298,7 @@
       color:white;
     }
 
+    /* ── HERO ── */
     .hero{
       max-width:1220px;
       margin:0 auto;
@@ -290,18 +333,23 @@
       pointer-events:none;
     }
 
-    .hero-logo{
+    /* hero logo circle */
+    .hero-logo-circle{
       width:160px;
       height:160px;
-      display:grid;
-      place-items:center;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid rgba(255,255,255,.3);
+      box-shadow:0 12px 36px rgba(0,0,0,.3);
+      background:transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       position:relative;
       z-index:2;
-      background:transparent;
-      box-shadow:none;
     }
 
-    .hero-logo img{
+    .hero-logo-circle img{
       width:100%;
       height:100%;
       object-fit:contain;
@@ -326,6 +374,7 @@
       line-height:1.05;
     }
 
+    /* ── CONTENT ── */
     .content{
       max-width:1220px;
       margin:0 auto;
@@ -559,7 +608,7 @@
         border-radius:30px;
       }
 
-      .hero-logo{
+      .hero-logo-circle{
         width:128px;
         height:128px;
       }
@@ -578,6 +627,11 @@
         padding:34px 24px;
       }
 
+      .logo-circle{
+        width:128px;
+        height:128px;
+      }
+
       .link-buttons{
         grid-template-columns:1fr;
       }
@@ -593,7 +647,11 @@
 
   <section id="login" class="login">
     <div class="login-card">
-      <img src="logo.png" class="login-logo" alt="Hub Logo">
+
+      <div class="logo-circle">
+        <img src="logo.png" alt="Hub Logo">
+      </div>
+
       <div class="brand-title">Hub</div>
       <div class="gold-line"></div>
       <div class="login-subtitle">חטיבת משרדי ממשלה</div>
@@ -603,8 +661,9 @@
       </p>
 
       <div class="login-fields">
-        <input class="field" type="email" placeholder="אימייל">
-        <input class="field" type="password" placeholder="סיסמה">
+        <input class="field" id="emailField" type="email" placeholder="אימייל">
+        <input class="field" id="passField" type="password" placeholder="סיסמה">
+        <div class="error-msg" id="errorMsg">אימייל או סיסמה שגויים. נסה שנית.</div>
         <button class="btn btn-primary" onclick="enterApp()">כניסה למערכת ✈</button>
       </div>
 
@@ -617,7 +676,9 @@
     <header class="topbar">
       <div class="topbar-inner">
         <div class="mini-brand">
-          <img src="logo.png" alt="Hub">
+          <div class="mini-logo-circle">
+            <img src="logo.png" alt="Hub">
+          </div>
           <span>Hub</span>
         </div>
 
@@ -630,7 +691,7 @@
 
     <section class="hero">
       <div class="hero-card">
-        <div class="hero-logo">
+        <div class="hero-logo-circle">
           <img src="logo.png" alt="Hub Logo">
         </div>
 
@@ -708,17 +769,39 @@
   </section>
 
   <script>
+    const CORRECT_PASSWORD = "Amsalem2026";
+
     function enterApp(){
+      const pass = document.getElementById("passField").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      if(pass !== CORRECT_PASSWORD){
+        errorMsg.classList.add("visible");
+        document.getElementById("passField").style.borderColor = "#c0392b";
+        return;
+      }
+
+      errorMsg.classList.remove("visible");
+      document.getElementById("passField").style.borderColor = "";
       document.getElementById("login").classList.add("hidden");
       document.getElementById("app").classList.remove("hidden");
       window.scrollTo(0,0);
     }
 
     function logout(){
+      document.getElementById("passField").value = "";
+      document.getElementById("emailField").value = "";
       document.getElementById("app").classList.add("hidden");
       document.getElementById("login").classList.remove("hidden");
       window.scrollTo(0,0);
     }
+
+    // Allow Enter key to submit
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Enter" && !document.getElementById("login").classList.contains("hidden")){
+        enterApp();
+      }
+    });
   </script>
 
 </body>
