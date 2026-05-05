@@ -815,25 +815,50 @@
   <script>
     const CORRECT_PASSWORD = "Amsalem2026";
 
-    function enterApp(){
-      const pass = document.getElementById("passField").value;
-      const errorMsg = document.getElementById("errorMsg");
+    const ALLOWED_EMAILS = [
+      "marina@amsalem.com",
+      "avic@amsalem.com",
+      "yaira@amsalem.com",
+      "maor@amsalem.com",
+      "galinar@amsalem.com",
+      "avid@amsalem.com",
+      "guy.ba@amsalem.com",
+      "gonen@amsalem.com",
+      "aviramc@amsalem.com",
+      "ilana@amsalem.com",
+      "shayada@amsalem.com",
+      "giladk@amsalem.com",
+      "liatpi@amsalem.com",
+      "olga@amsalem.com"
+    ];
 
-      if(pass !== CORRECT_PASSWORD){
+    function enterApp(){
+      const email = document.getElementById("emailField").value.trim().toLowerCase();
+      const pass  = document.getElementById("passField").value;
+      const errorMsg = document.getElementById("errorMsg");
+      const emailEl = document.getElementById("emailField");
+      const passEl  = document.getElementById("passField");
+
+      const emailOk = ALLOWED_EMAILS.includes(email);
+      const passOk  = pass === CORRECT_PASSWORD;
+
+      if(!emailOk || !passOk){
         errorMsg.classList.add("visible");
-        document.getElementById("passField").style.borderColor = "#c0392b";
+        if(!emailOk) emailEl.style.borderColor = "#c0392b";
+        if(!passOk)  passEl.style.borderColor  = "#c0392b";
         return;
       }
 
       errorMsg.classList.remove("visible");
-      document.getElementById("passField").style.borderColor = "";
+      emailEl.style.borderColor = "";
+      passEl.style.borderColor  = "";
       document.getElementById("login").classList.add("hidden");
       document.getElementById("app").classList.remove("hidden");
       window.scrollTo(0,0);
     }
 
     function logout(){
-      document.getElementById("passField").value = "";
+      document.getElementById("passField").value  = "";
       document.getElementById("emailField").value = "";
       document.getElementById("app").classList.add("hidden");
       document.getElementById("login").classList.remove("hidden");
